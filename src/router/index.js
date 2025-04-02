@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-// import DonationPage from '@/views/DonationPage.vue'
+import DonationPage from '../views/DonationPage.vue'
+import AboutUsPage from '../views/AboutUsPage.vue'
+import GetInvolved from '../views/GetInvolved.vue'
+import ContactPage from '../views/ContactPage.vue'
+import RefugeePage from '../views/RefugeePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,11 +17,27 @@ const router = createRouter({
     {
       path: '/donations',
       name: 'donations',
-      // component: DonationPage,
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/DonationPage.vue'),
+      component: DonationPage,
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: AboutUsPage,
+    },
+    {
+      path: '/get-involved',
+      name: 'get-involved',
+      component: GetInvolved,
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: ContactPage,
+    },
+    {
+      path: '/refugees',
+      name: 'refugees',
+      component: RefugeePage,
     },
   ],
 })

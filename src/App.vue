@@ -8,7 +8,11 @@ import { RouterLink, RouterView } from 'vue-router'
 
     <nav>
       <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/donations">Donations</RouterLink>
+      <RouterLink to="/refugees">Asylum Seekers and Refugees</RouterLink>
+      <RouterLink to="/about">About Us</RouterLink>
+      <RouterLink to="/get-involved">Get Involved</RouterLink>
+      <RouterLink to="/contact">Contact and Support</RouterLink>
+      <RouterLink to="/donations">Donate Today</RouterLink>
     </nav>
   </header>
 
@@ -19,7 +23,32 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <style scoped>
 header {
-  line-height: 1.5;
+  background: #9c9a9a;
+  padding: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+nav .router-link-active {
+  text-decoration: none;
+  color: #000000;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+main {
+  margin-top: 5rem;
+  padding: 1rem;
 }
 
 .logo {
@@ -29,6 +58,7 @@ header {
 
 @media (min-width: 1024px) {
   header {
+    background: #f0f0f073;
     display: flex;
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
