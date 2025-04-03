@@ -1,5 +1,35 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import SearchBar from './components/SearchBar.vue'
+
+import { onMounted, ref } from 'vue'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+import router from './router'
+const isLoggedIn = ref(false)
+
+let auth
+onMounted(() => {
+  auth = getAuth()
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      isLoggedIn.value = true
+    } else {
+      isLoggedIn.value = false
+    }
+  })
+})
+
+const handleSignOut = () => {
+  signOut(auth)
+    .then(() => {
+      router.push('/')
+      console.log('User signed out successfully!')
+      isLoggedIn.value = false
+    })
+    .catch((error) => {
+      console.error('Error signing out:', error)
+    })
+}
 </script>
 
 <template>
@@ -7,13 +37,21 @@ import { RouterLink, RouterView } from 'vue-router'
     <!-- <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" /> -->
 
     <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/refugees">Asylum Seekers and Refugees</RouterLink>
-      <RouterLink to="/about">About Us</RouterLink>
-      <RouterLink to="/get-involved">Get Involved</RouterLink>
-      <RouterLink to="/contact">Contact and Support</RouterLink>
-      <RouterLink to="/donations">Donate Today</RouterLink>
+      <RouterLink to="/">Home</RouterLink> |
+      <RouterLink to="/refugees"
+        >Asylum Seekers <br />
+        and Refugees</RouterLink
+      >
+      | <RouterLink to="/about">About Us</RouterLink> |
+      <RouterLink to="/get-involved">Get Involved</RouterLink> |
+      <RouterLink to="/contact">Contact and Support</RouterLink> |
+      <RouterLink to="/donations">Donate Today</RouterLink> |
+
+      <RouterLink to="/feed">Feed</RouterLink> | <RouterLink to="/register">Register</RouterLink> |
+      <RouterLink to="/signin">Sign In</RouterLink>
+      <button v-if="isLoggedIn" @click="handleSignOut" class="sign-out-button">Sign Out</button>
     </nav>
+    <SearchBar />
   </header>
 
   <main>

@@ -69,7 +69,7 @@ export default {
 .donation-form button {
   width: 100%;
   padding: 0.75rem;
-  background-color: #007bff;
+  background-color: #4e555c;
   color: white;
   border: none;
   border-radius: 4px;
@@ -78,5 +78,6 @@ export default {
 
 .donation-form button:hover {
   background-color: #0056b3;
+  transition: ease 0.8s;
 }
 </style>

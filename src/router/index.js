@@ -39,6 +39,9 @@ const router = createRouter({
       name: 'refugees',
       component: RefugeePage,
     },
+    { path: '/feed', component: () => import('../views/Feed.vue') },
+    { path: '/register', component: () => import('../views/UserRegister.vue') },
+    { path: '/signin', component: () => import('../views/SignIn.vue') },
   ],
 })
 

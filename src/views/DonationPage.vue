@@ -19,6 +19,7 @@ export default {
 <style scoped>
 .donation-page {
   display: flex;
+  color: black;
   justify-content: center;
   align-items: center;
   height: 100vh;
