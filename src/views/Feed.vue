@@ -1,10 +1,14 @@
 <template>
-  <div class="feed-page">
-    <h1>Feed</h1>
-    <div class="feed-container">
-      <div v-for="post in posts" :key="post.id" class="feed-post">
-        <h2>{{ post.title }}</h2>
-        <p>{{ post.content }}</p>
+  <div class="container py-4 feed-page">
+    <h1 class="mb-4">Feed</h1>
+    <div class="row">
+      <div v-for="post in posts" :key="post.id" class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">{{ post.title }}</h2>
+            <p class="card-text">{{ post.content }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

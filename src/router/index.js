@@ -5,6 +5,13 @@ import AboutUsPage from '../views/AboutUsPage.vue'
 import GetInvolved from '../views/GetInvolved.vue'
 import ContactPage from '../views/ContactPage.vue'
 import RefugeePage from '../views/RefugeePage.vue'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+
+// Import refugee pages
+import HowWeHelp from '../views/refugees/HowWeHelp.vue'
+import HousingFinance from '../views/refugees/HousingFinance.vue'
+import LegalAid from '../views/refugees/LegalAid.vue'
+import LanguageHelp from '../views/refugees/LanguageHelp.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,10 +46,49 @@ const router = createRouter({
       name: 'refugees',
       component: RefugeePage,
     },
-    { path: '/feed', component: () => import('../views/Feed.vue') },
+    {
+      path: '/feed',
+      component: () => import('../views/Feed.vue'),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+
     { path: '/register', component: () => import('../views/UserRegister.vue') },
     { path: '/signin', component: () => import('../views/SignIn.vue') },
+
+    // Refugee pages routes:
+    { path: '/refugees/how-we-help', name: 'howWeHelp', component: HowWeHelp },
+    { path: '/refugees/housing', name: 'housing', component: HousingFinance },
+    { path: '/refugees/legal', name: 'legal', component: LegalAid },
+    { path: '/refugees/language', name: 'language', component: LanguageHelp },
   ],
+})
+
+const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const removeListener = onAuthStateChanged(
+      getAuth(),
+      (user) => {
+        removeListener
+        resolve(user)
+      },
+      reject,
+    )
+  })
+}
+
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (await getCurrentUser()) {
+      next()
+    } else {
+      alert('You do not have access. Please sign in.')
+      next('/')
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -34,23 +34,38 @@ const handleSignOut = () => {
 
 <template>
   <header>
-    <!-- <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" /> -->
+    <div class="header-container">
+      <img class="logo" src="@/assets/new_horizons.svg" alt="Logo" />
+      <nav>
+        <ul class="nav-menu">
+          <li><RouterLink to="/">Home</RouterLink></li>
 
-    <nav>
-      <RouterLink to="/">Home</RouterLink> |
-      <RouterLink to="/refugees"
-        >Asylum Seekers <br />
-        and Refugees</RouterLink
-      >
-      | <RouterLink to="/about">About Us</RouterLink> |
-      <RouterLink to="/get-involved">Get Involved</RouterLink> |
-      <RouterLink to="/contact">Contact and Support</RouterLink> |
-      <RouterLink to="/donations">Donate Today</RouterLink> |
+          <!-- Dropdown Menu -->
+          <li class="dropdown">
+            <span class="dropbtn">Assylum Seekers & Refugees</span>
+            <ul class="dropdown-content">
+              <li><RouterLink to="/refugees/how-we-help">How We Help</RouterLink></li>
+              <li><RouterLink to="/refugees/housing">Housing and Finance</RouterLink></li>
+              <li><RouterLink to="/refugees/legal">Legal Aid</RouterLink></li>
+              <li><RouterLink to="/refugees/language">Language and Education</RouterLink></li>
+            </ul>
+          </li>
 
-      <RouterLink to="/feed">Feed</RouterLink> | <RouterLink to="/register">Register</RouterLink> |
-      <RouterLink to="/signin">Sign In</RouterLink>
-      <button v-if="isLoggedIn" @click="handleSignOut" class="sign-out-button">Sign Out</button>
-    </nav>
+          <li><RouterLink to="/about">About Us</RouterLink></li>
+          <li><RouterLink to="/get-involved">Get Involved</RouterLink></li>
+          <li><RouterLink to="/contact">Contact and Support</RouterLink></li>
+          <li><RouterLink to="/donations">Donate Today</RouterLink></li>
+          <li><RouterLink to="/feed">Feed</RouterLink></li>
+          <li><RouterLink to="/register">Register</RouterLink></li>
+          <li><RouterLink to="/signin">Sign In</RouterLink></li>
+          <li>
+            <button v-if="isLoggedIn" @click="handleSignOut" class="sign-out-button">
+              Sign Out
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
     <SearchBar />
   </header>
 
@@ -70,10 +85,79 @@ header {
   z-index: 1000;
 }
 
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 nav {
   display: flex;
   justify-content: center;
   gap: 1rem;
+}
+
+/* Main navigation styling */
+.nav-menu {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-menu > li {
+  position: relative;
+  margin-right: 1rem;
+}
+
+/* Dropdown button styling */
+.dropbtn {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+}
+
+/* Dropdown content styling - hidden by default */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #9c9a9a;
+  min-width: 160px;
+  z-index: 1001;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Display dropdown on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Individual dropdown link styling */
+.dropdown-content li {
+  padding: 0;
+}
+
+.dropdown-content li a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Hover effect for dropdown links */
+.dropdown-content li a:hover {
+  background-color: #777;
+}
+
+.sign-out-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
 }
 
 nav .router-link-active {
@@ -90,13 +174,13 @@ main {
 }
 
 .logo {
-  display: block;
-  margin: 0 auto 2rem;
+  max-height: 150px;
+  /* margin-right: 0.5rem; */
 }
 
 @media (min-width: 1024px) {
   header {
-    background: #f0f0f073;
+    background: #9c9a9a;
     display: flex;
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
