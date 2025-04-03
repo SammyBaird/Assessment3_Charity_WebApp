@@ -4,7 +4,6 @@ import DonationPage from '../views/DonationPage.vue'
 import AboutUsPage from '../views/AboutUsPage.vue'
 import GetInvolved from '../views/GetInvolved.vue'
 import ContactPage from '../views/ContactPage.vue'
-import RefugeePage from '../views/RefugeePage.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 // Import refugee pages
@@ -12,6 +11,9 @@ import HowWeHelp from '../views/refugees/HowWeHelp.vue'
 import HousingFinance from '../views/refugees/HousingFinance.vue'
 import LegalAid from '../views/refugees/LegalAid.vue'
 import LanguageHelp from '../views/refugees/LanguageHelp.vue'
+
+// Money Spent
+import MoneySpent from '../views/MoneySpent.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,11 +44,6 @@ const router = createRouter({
       component: ContactPage,
     },
     {
-      path: '/refugees',
-      name: 'refugees',
-      component: RefugeePage,
-    },
-    {
       path: '/feed',
       component: () => import('../views/Feed.vue'),
       meta: {
@@ -62,6 +59,9 @@ const router = createRouter({
     { path: '/refugees/housing', name: 'housing', component: HousingFinance },
     { path: '/refugees/legal', name: 'legal', component: LegalAid },
     { path: '/refugees/language', name: 'language', component: LanguageHelp },
+
+    // Money Spent page route
+    { path: '/money-spent', name: 'money-spent', component: MoneySpent },
   ],
 })
 

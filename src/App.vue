@@ -52,6 +52,7 @@ const handleSignOut = () => {
           </li>
 
           <li><RouterLink to="/about">About Us</RouterLink></li>
+          <li><RouterLink to="/money-spent">Money Spent (Test)</RouterLink></li>
           <li><RouterLink to="/get-involved">Get Involved</RouterLink></li>
           <li><RouterLink to="/contact">Contact and Support</RouterLink></li>
           <li><RouterLink to="/donations">Donate Today</RouterLink></li>
