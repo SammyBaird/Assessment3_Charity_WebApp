@@ -35,14 +35,17 @@ const handleSignOut = () => {
 <template>
   <header>
     <div class="header-container">
-      <img class="logo" src="@/assets/new_horizons.svg" alt="Logo" />
+      <RouterLink to="/">
+        <img class="logo" src="@/assets/new_horizons.svg" alt="Logo" />
+      </RouterLink>
       <nav>
         <ul class="nav-menu">
-          <li><RouterLink to="/">Home</RouterLink></li>
-
           <!-- Dropdown Menu -->
           <li class="dropdown">
-            <span class="dropbtn">Assylum Seekers & Refugees</span>
+            <span class="dropbtn"
+              >Assylum Seekers<br />
+              & Refugees</span
+            >
             <ul class="dropdown-content">
               <li><RouterLink to="/refugees/how-we-help">How We Help</RouterLink></li>
               <li><RouterLink to="/refugees/housing">Housing and Finance</RouterLink></li>
@@ -51,11 +54,58 @@ const handleSignOut = () => {
             </ul>
           </li>
 
-          <li><RouterLink to="/about">About Us</RouterLink></li>
-          <li><RouterLink to="/money-spent">Money Spent (Test)</RouterLink></li>
-          <li><RouterLink to="/get-involved">Get Involved</RouterLink></li>
-          <li><RouterLink to="/contact">Contact and Support</RouterLink></li>
-          <li><RouterLink to="/donations">Donate Today</RouterLink></li>
+          <!-- About Us Menu -->
+          <li class="dropdown">
+            <span class="dropbtn">About Us</span>
+            <ul class="dropdown-content">
+              <li><RouterLink to="/aboutus/mission">Our Mission and Story</RouterLink></li>
+              <li><RouterLink to="/aboutus/impact">New Horizons Impact</RouterLink></li>
+              <li><RouterLink to="/aboutus/partners">Team and Partners</RouterLink></li>
+            </ul>
+          </li>
+
+          <!-- Get Involved Menu -->
+          <li class="dropdown">
+            <span class="dropbtn">Get Involved</span>
+            <ul class="dropdown-content">
+              <li><RouterLink to="/getinvolved/volunteering">Volunteering</RouterLink></li>
+              <li>
+                <RouterLink to="/getinvolved/fundraising">Fundrainsing and Events</RouterLink>
+              </li>
+              <li>
+                <RouterLink to="/getinvolved/corporate">Corporate Partnership Program</RouterLink>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Contact Menu -->
+          <li class="dropdown">
+            <span class="dropbtn">Contact and Support</span>
+            <ul class="dropdown-content">
+              <li><RouterLink to="/contact/contact">Contact Information</RouterLink></li>
+              <li>
+                <RouterLink to="/contact/help-line">Help Line and Live Chat (Preview)</RouterLink>
+              </li>
+              <li>
+                <RouterLink to="/contact/testimonials">Testimonials</RouterLink>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Donations Menu -->
+          <li class="dropdown">
+            <span class="dropbtn">Donations</span>
+            <ul class="dropdown-content">
+              <li><RouterLink to="/donation/donation-options">Donation Options</RouterLink></li>
+              <li>
+                <RouterLink to="/donation/money-spent">Where Your Money Goes</RouterLink>
+              </li>
+              <li>
+                <RouterLink to="/donation/sponsorship">Sponsorship initiatives</RouterLink>
+              </li>
+            </ul>
+          </li>
+
           <li><RouterLink to="/feed">Feed</RouterLink></li>
           <li><RouterLink to="/register">Register</RouterLink></li>
           <li><RouterLink to="/signin">Sign In</RouterLink></li>
@@ -78,12 +128,13 @@ const handleSignOut = () => {
 <style scoped>
 header {
   background: #9c9a9a;
-  padding: 1rem;
+  padding: 0.25rem 0.5rem;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
+  min-height: 60px;
 }
 
 .header-container {
@@ -94,7 +145,8 @@ header {
 
 nav {
   display: flex;
-  justify-content: center;
+  margin-left: auto;
+  /* justify-content: center; */
   gap: 1rem;
 }
 

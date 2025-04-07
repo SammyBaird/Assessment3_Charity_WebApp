@@ -1,5 +1,5 @@
 <script>
-import Donation from '../components/Donation.vue'
+import Donation from '../../components/Donation.vue'
 export default {
   name: 'DonationPage',
   components: {

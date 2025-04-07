@@ -1,6 +1,6 @@
 <template>
   <div class="container py-4 feed-page">
-    <h1 class="mb-4">Feed</h1>
+    <h1 class="mb-4">User Portal</h1>
     <div class="row">
       <div v-for="post in posts" :key="post.id" class="col-md-4 mb-3">
         <div class="card">

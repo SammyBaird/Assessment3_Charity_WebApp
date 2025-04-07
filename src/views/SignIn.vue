@@ -1,7 +1,7 @@
 <template>
   <hi>Sign In To Your Account</hi>
   <p><input type="text" placeholder="Email" v-model="email" /></p>
-  <p><input type="text" placeholder="Password" v-model="password" /></p>
+  <p><input type="password" placeholder="Password" v-model="password" /></p>
   <p v-if="errMsg" class="error">{{ errMsg }}</p>
   <p><button @click="register">Submit</button></p>
   <p><button @click="singInWithGoogle">Sign In With Google</button></p>
