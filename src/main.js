@@ -16,13 +16,12 @@ import { initializeApp } from 'firebase/app'
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyD9im9Z-nlpSWtvDrC6buWqBlk8L_W9fj0',
-  authDomain: 'assess-3-charity.firebaseapp.com',
-  projectId: 'assess-3-charity',
-  storageBucket: 'assess-3-charity.firebasestorage.app',
-  messagingSenderId: '260917059880',
-  appId: '1:260917059880:web:8ba0f7f482499c9958b01d',
-  measurementId: 'G-CK84HMLQHE',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 }
 
 initializeApp(firebaseConfig)
