@@ -1,0 +1,20 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Pastel orange gradient -->
+    <linearGradient id="gradOrange" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFD1A9"/>
+      <stop offset="100%" stop-color="#FFB347"/>
+    </linearGradient>
+    <!-- Pastel blue gradient -->
+    <linearGradient id="gradBlue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#A9D6E5"/>
+      <stop offset="100%" stop-color="#E0F7FA"/>
+    </linearGradient>
+  </defs>
+  <!-- Left Circle -->
+  <circle cx="150" cy="150" r="70" fill="url(#gradOrange)" opacity="0.9"/>
+  <!-- Right Circle -->
+  <circle cx="250" cy="150" r="70" fill="url(#gradBlue)" opacity="0.9"/>
+  <!-- Central Highlight -->
+  <circle cx="200" cy="150" r="40" fill="#FFFFFF" opacity="0.8"/>
+</svg>
