@@ -106,7 +106,6 @@ const handleSignOut = () => {
             </ul>
           </li>
 
-          <li><RouterLink to="/feed">Feed</RouterLink></li>
           <li><RouterLink to="/register">Register</RouterLink></li>
           <li><RouterLink to="/signin">Sign In</RouterLink></li>
           <li>
@@ -127,7 +126,7 @@ const handleSignOut = () => {
 
 <style scoped>
 header {
-  background: #9c9a9a;
+  background: #c9c7c7;
   padding: 0.25rem 0.5rem;
   position: fixed;
   top: 0;
@@ -146,11 +145,9 @@ header {
 nav {
   display: flex;
   margin-left: auto;
-  /* justify-content: center; */
   gap: 1rem;
 }
 
-/* Main navigation styling */
 .nav-menu {
   list-style-type: none;
   display: flex;
@@ -163,19 +160,17 @@ nav {
   margin-right: 1rem;
 }
 
-/* Dropdown button styling */
 .dropbtn {
   cursor: pointer;
   padding: 0.5rem 1rem;
 }
 
-/* Dropdown content styling - hidden by default */
 .dropdown-content {
   display: none;
   position: absolute;
   top: 100%;
   left: 0;
-  background: #9c9a9a;
+  background: #f3f8f2;
   min-width: 160px;
   z-index: 1001;
   list-style: none;
@@ -183,12 +178,10 @@ nav {
   margin: 0;
 }
 
-/* Display dropdown on hover */
 .dropdown:hover .dropdown-content {
   display: block;
 }
 
-/* Individual dropdown link styling */
 .dropdown-content li {
   padding: 0;
 }
@@ -200,9 +193,8 @@ nav {
   text-decoration: none;
 }
 
-/* Hover effect for dropdown links */
 .dropdown-content li a:hover {
-  background-color: #777;
+  background-color: #87ceeb;
 }
 
 .sign-out-button {
@@ -233,7 +225,7 @@ main {
 
 @media (min-width: 1024px) {
   header {
-    background: #9c9a9a;
+    background: #f3f8f2;
     display: flex;
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);

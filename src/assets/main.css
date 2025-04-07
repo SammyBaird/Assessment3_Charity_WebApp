@@ -1,10 +1,20 @@
 @import './base.css';
 
+/*
+some potential colour schemes:
+Glowing Horizon
+- #FFB343
+- #f9c784 nav bar?
+- #4272FF
+- #FF7E42
+*/
+
 #app {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   font-weight: normal;
+  background-color: #f3f8f2;
 }
 
 a,
@@ -22,7 +32,7 @@ a::after {
   bottom: -2px;
   width: 0;
   height: 2px;
-  background-color: rgb(71, 146, 189);
+  background-color: #b9e6ff;
   transition: width 0.4s ease;
 }
 
@@ -52,5 +62,6 @@ a::after {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1rem;
+    background-color: #f3f8f2;
   }
 }

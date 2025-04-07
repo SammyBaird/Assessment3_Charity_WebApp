@@ -73,6 +73,16 @@ const router = createRouter({
       path: '/getinvolved/corporate',
       component: () => import('../views/getinvolved/CorporatePage.vue'),
     },
+
+    // Lazy-load User Portal page routes:
+    {
+      path: '/user-portal/donor',
+      component: () => import('../views/userportals/DonorPortal.vue'),
+    },
+    {
+      path: '/user-portal/refugee',
+      component: () => import('../views/userportals/RefugeePortal.vue'),
+    },
   ],
 })
 

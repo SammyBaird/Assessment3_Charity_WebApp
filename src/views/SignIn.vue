@@ -3,7 +3,7 @@
   <p><input type="text" placeholder="Email" v-model="email" /></p>
   <p><input type="password" placeholder="Password" v-model="password" /></p>
   <p v-if="errMsg" class="error">{{ errMsg }}</p>
-  <p><button @click="register">Submit</button></p>
+  <p><button @click="signIn">Submit</button></p>
   <p><button @click="singInWithGoogle">Sign In With Google</button></p>
 </template>
 
@@ -15,16 +15,35 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth'
+import { getDoc, doc, getFirestore } from 'firebase/firestore'
 import { useRouter } from 'vue-router'
+const db = getFirestore()
 const email = ref('')
 const password = ref('')
 const router = useRouter()
 const errMsg = ref()
-const register = () => {
+
+//
+const signIn = () => {
   signInWithEmailAndPassword(getAuth(), email.value, password.value)
-    .then(() => {
-      console.log('User created successfully!')
-      router.push('/feed')
+    .then(async (userCredential) => {
+      const user = userCredential.user
+      const docRef = doc(db, 'users', user.uid)
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        const data = docSnap.data()
+        if (data.accountType === 'donor') {
+          router.push('/user-portal/donor')
+        } else if (data.accountType === 'refugee') {
+          router.push('/user-portal/refugee')
+        } else {
+          console.warn('Account type not recognized. Redirecting to home.')
+          router.push('/')
+        }
+      } else {
+        console.error('No user document found for:', user.uid)
+        router.push('/feed')
+      }
     })
     .catch((error) => {
       console.error(error.code)
@@ -43,10 +62,27 @@ const register = () => {
 
 const singInWithGoogle = () => {
   const provider = new GoogleAuthProvider()
-  signInWithPopup(getAuth(), provider)
-    .then((result) => {
-      console.log(result.user)
-      router.push('/feed')
+  const auth = getAuth()
+  const db = getFirestore()
+  signInWithPopup(auth, provider)
+    .then(async (result) => {
+      const user = result.user
+      const docRef = doc(db, 'users', user.uid)
+      const docSnap = await getDoc(docRef)
+      if (docSnap.exists()) {
+        const data = docSnap.data()
+        if (data.accountType === 'donor') {
+          router.push('/donor-portal')
+        } else if (data.accountType === 'refugee') {
+          router.push('/refugee-portal')
+        } else {
+          console.warn('Account type not recognized. Redirecting to home.')
+          router.push('/')
+        }
+      } else {
+        console.error('No user document found for:', user.uid)
+        router.push('/feed')
+      }
     })
     .catch((error) => {
       console.error(error.code)
