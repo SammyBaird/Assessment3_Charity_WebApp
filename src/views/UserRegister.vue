@@ -1,6 +1,10 @@
 <template>
   <h1>Create an Account</h1>
   <div class="registration">
+    <div class="name-inputs">
+      <input type="text" v-model="firstName" placeholder="First Name" required />
+      <input type="text" v-model="lastName" placeholder="Last Name" required />
+    </div>
     <input type="text" v-model="email" placeholder="Email" required />
     <input
       type="password"
@@ -59,6 +63,8 @@ const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 const accountType = ref('donor')
+const firstName = ref('')
+const lastName = ref('')
 const gender = ref('Prefer not to say')
 const errorMsg = ref('')
 const router = useRouter()
@@ -94,6 +100,8 @@ const register = async () => {
     const user = userCredential.user
 
     await setDoc(doc(db, 'users', user.uid), {
+      firstName: firstName.value,
+      lastName: lastName.value,
       email: user.email,
       accountType: accountType.value,
       gender: gender.value,
@@ -122,6 +130,15 @@ h1 {
   gap: 1rem;
   justify-content: center;
   margin-top: 1rem;
+}
+
+.name-inputs {
+  display: flex;
+  gap: 1rem;
+}
+
+.name-inputs input {
+  flex: 1;
 }
 
 .registration {

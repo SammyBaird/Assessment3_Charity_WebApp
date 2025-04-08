@@ -17,7 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 
-const dataPath = path.join('spendingdata.json')
+const dataPath = path.join('users.json')
 
 fs.readFile(dataPath, 'utf8', async (err, fileData) => {
   if (err) {
@@ -28,7 +28,7 @@ fs.readFile(dataPath, 'utf8', async (err, fileData) => {
     const spendingData = JSON.parse(fileData)
     for (const entry of spendingData) {
       // Each entry will be added as a new document in the "spending" collection
-      const docRef = await addDoc(collection(db, 'spending'), entry)
+      const docRef = await addDoc(collection(db, 'users'), entry)
       console.log('Added document with ID:', docRef.id, 'for', entry.month)
     }
     console.log('Seeding complete!')

@@ -16,13 +16,6 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
-    {
-      path: '/feed',
-      component: () => import('../views/Feed.vue'),
-      meta: {
-        requiresAuth: true,
-      },
-    },
 
     { path: '/register', component: () => import('../views/UserRegister.vue') },
     { path: '/signin', component: () => import('../views/SignIn.vue') },
