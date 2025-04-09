@@ -11,6 +11,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@sendgrid/mail": "^8.1.5",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.8",
     "chartjs-chart-geo": "^4.3.4",
