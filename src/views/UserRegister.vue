@@ -1,6 +1,114 @@
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { getFirestore, doc, setDoc } from 'firebase/firestore'
+
+const email = ref('')
+const password = ref('')
+const confirmPassword = ref('')
+const accountType = ref('donor')
+const firstName = ref('')
+const lastName = ref('')
+const gender = ref('Prefer not to say')
+const errorMsg = ref('')
+const router = useRouter()
+
+const auth = getAuth()
+const db = getFirestore()
+
+const countries = ref([])
+const nationality = ref('')
+
+// Fetch countries from API
+onMounted(async () => {
+  try {
+    const response = await fetch('https://restcountries.com/v2/all')
+    const data = await response.json()
+    countries.value = data.sort((a, b) => a.name.localeCompare(b.name))
+    console.log('Countries:', countries.value)
+  } catch (error) {
+    console.error('Error fetching countries:', error)
+  }
+})
+
+// Register function
+const register = async () => {
+  // basic validation -- May improve later
+  let errors = []
+
+  // Check for empty fields
+  if (!email.value) errors.push('Email is required')
+  if (!password.value) errors.push('Password is required')
+  if (!confirmPassword.value) errors.push('Confirm Password is required')
+  if (!firstName.value) errors.push('First Name is required')
+  if (!lastName.value) errors.push('Last Name is required')
+  if (!nationality.value) errors.push('Nationality is required')
+
+  // Check for password match
+  if (password.value !== confirmPassword.value) errors.push('Passwords do not match')
+
+  // Check email format
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (email.value && !emailRegex.test(email.value)) {
+    errors.push('Email format is invalid')
+  }
+
+  // Check password length
+  if (password.value && (password.value.length < 6 || password.value.length > 16)) {
+    errors.push('Password must be between 6 and 16 characters in length')
+  }
+
+  // Check if there are any errors
+  if (errors.length > 0) {
+    errorMsg.value = errors.join(', ')
+    return
+  }
+
+  // Proceed with registration
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
+    const user = userCredential.user
+
+    // Update the Firebase Auth profile to store the first name as displayName
+    await updateProfile(user, { displayName: firstName.value })
+
+    // Save additional user data in the Firestore "users" collection
+    await setDoc(doc(db, 'users', user.uid), {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: user.email,
+      accountType: accountType.value,
+      gender: gender.value,
+      nationality: nationality.value.name,
+      region: nationality.value.region,
+      createdAt: new Date().toISOString(),
+    })
+
+    try {
+      // Push based on created account type
+      if (accountType.value === 'refugee') {
+        router.push('/user-portal/refugee')
+      } else if (accountType.value === 'donor') {
+        router.push('/user-portal/donor')
+      }
+    } catch (err) {
+      console.error('Error redirecting:', err)
+    }
+  } catch (err) {
+    errorMsg.value = err.message
+    alert('Error: ' + err.message)
+  }
+}
+</script>
+
 <template>
   <h1>Create an Account</h1>
   <div class="registration">
+    <div class="name-inputs">
+      <input type="text" v-model="firstName" placeholder="First Name" required />
+      <input type="text" v-model="lastName" placeholder="Last Name" required />
+    </div>
     <input type="text" v-model="email" placeholder="Email" required />
     <input
       type="password"
@@ -49,66 +157,6 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
-import { getFirestore, doc, setDoc } from 'firebase/firestore'
-
-const email = ref('')
-const password = ref('')
-const confirmPassword = ref('')
-const accountType = ref('donor')
-const gender = ref('Prefer not to say')
-const errorMsg = ref('')
-const router = useRouter()
-
-const auth = getAuth()
-const db = getFirestore()
-
-const countries = ref([])
-const nationality = ref('')
-
-// Fetch countries from API (Couldn't get v3.1 to work)
-onMounted(async () => {
-  try {
-    const response = await fetch('https://restcountries.com/v2/all')
-    const data = await response.json()
-    countries.value = data.sort((a, b) => a.name.localeCompare(b.name))
-    console.log('Countries:', countries.value)
-  } catch (error) {
-    console.error('Error fetching countries:', error)
-  }
-})
-
-// Register function
-const register = async () => {
-  // basic validation -- Could be improved
-  if (password.value !== confirmPassword.value) {
-    errorMsg.value = 'Passwords do not match'
-    return
-  }
-
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email.value, password.value)
-    const user = userCredential.user
-
-    await setDoc(doc(db, 'users', user.uid), {
-      email: user.email,
-      accountType: accountType.value,
-      gender: gender.value,
-      nationality: nationality.value.name,
-      region: nationality.value.region,
-      createdAt: new Date().toISOString(),
-    })
-
-    router.push('/feed')
-  } catch (err) {
-    errorMsg.value = err.message
-  }
-}
-</script>
-
 <style scoped>
 h1 {
   text-align: center;
@@ -122,6 +170,15 @@ h1 {
   gap: 1rem;
   justify-content: center;
   margin-top: 1rem;
+}
+
+.name-inputs {
+  display: flex;
+  gap: 1rem;
+}
+
+.name-inputs input {
+  flex: 1;
 }
 
 .registration {

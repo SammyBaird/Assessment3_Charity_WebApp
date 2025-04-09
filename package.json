@@ -13,7 +13,9 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.8",
+    "chartjs-chart-geo": "^4.3.4",
     "firebase": "^11.6.0",
+    "google-maps-api-loader": "^1.1.1",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
