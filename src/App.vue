@@ -1,20 +1,39 @@
 <script setup>
+import { ref, onMounted, computed } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import SearchBar from './components/SearchBar.vue'
-
-import { onMounted, ref } from 'vue'
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+import { getFirestore, doc, getDoc } from 'firebase/firestore'
 import router from './router'
-const isLoggedIn = ref(false)
 
-let auth
+const isLoggedIn = ref(false)
+const accountType = ref(null)
+const firstName = ref('')
+
+const auth = getAuth()
+const db = getFirestore()
+
 onMounted(() => {
-  auth = getAuth()
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
       isLoggedIn.value = true
+      const userDocRef = doc(db, 'users', user.uid)
+      try {
+        const docSnap = await getDoc(userDocRef)
+        if (docSnap.exists()) {
+          accountType.value = docSnap.data().accountType
+          firstName.value = docSnap.data().firstName
+        } else {
+          console.error('No user document found for', user.uid)
+          accountType.value = null
+        }
+      } catch (error) {
+        console.error('Error fetching user doc:', error)
+      }
     } else {
       isLoggedIn.value = false
+      accountType.value = null
+      firstName.value = ''
     }
   })
 })
@@ -23,13 +42,21 @@ const handleSignOut = () => {
   signOut(auth)
     .then(() => {
       router.push('/')
-      console.log('User signed out successfully!')
       isLoggedIn.value = false
+      accountType.value = null
+      console.log('User signed out successfully!')
     })
     .catch((error) => {
+      if (!isLoggedIn.value || !accountType.value) return null
       console.error('Error signing out:', error)
     })
 }
+
+// Check which route to push based on accountType
+const portalRoute = computed(() => {
+  if (!isLoggedIn.value) return null
+  return accountType.value === 'donor' ? '/user-portal/donor' : '/user-portal/refugee'
+})
 </script>
 
 <template>
@@ -106,8 +133,19 @@ const handleSignOut = () => {
             </ul>
           </li>
 
-          <li><RouterLink to="/register">Register</RouterLink></li>
-          <li><RouterLink to="/signin">Sign In</RouterLink></li>
+          <!-- Only show User Portal if logged in -->
+          <li v-if="isLoggedIn && portalRoute" class="nav-item">
+            <RouterLink :to="portalRoute">User Portal</RouterLink>
+          </li>
+
+          <!-- Only show Register and Sign In if not logged in -->
+          <li v-if="!isLoggedIn" class="nav-item">
+            <RouterLink to="/register">Register</RouterLink>
+          </li>
+          <li v-if="!isLoggedIn" class="nav-item">
+            <RouterLink to="/signin">Sign In</RouterLink>
+          </li>
+          <!-- Show Sign Out button if logged in -->
           <li>
             <button v-if="isLoggedIn" @click="handleSignOut" class="sign-out-button">
               Sign Out

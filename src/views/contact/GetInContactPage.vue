@@ -1,10 +1,67 @@
-<script>
+<script setup>
+import { ref, onMounted } from 'vue'
+import { getAuth } from 'firebase/auth'
+import { getFirestore, doc, setDoc } from 'firebase/firestore'
 import MapTest from '../../components/MapTest.vue'
-export default {
-  name: 'ContactPage',
-  components: {
-    MapTest,
-  },
+
+const email = ref('')
+const firstLastName = ref('')
+const contactMessage = ref('')
+const errorMsg = ref('')
+
+const auth = getAuth()
+const db = getFirestore()
+
+onMounted(() => {
+  if (auth.currentUser) {
+    email.value = auth.currentUser.email
+    firstLastName.value = auth.currentUser.displayName
+  }
+})
+
+// Function to handle form submission
+const contactSubmission = async () => {
+  let errors = []
+  const user = auth.currentUser
+  if (user) {
+    email.value = user.email
+    firstLastName.value = user.displayName
+  }
+
+  // Validate fields
+  if (!email.value.trim()) errors.push('Email is required')
+  if (!firstLastName.value.trim()) errors.push('Name is required')
+  if (!contactMessage.value.trim()) errors.push('Message is required')
+
+  // Message length limit
+  if (contactMessage.value.length > 500) {
+    errors.push('Message must be less than 500 characters')
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (email.value && !emailRegex.test(email.value)) {
+    errors.push('Email format is invalid')
+  }
+
+  if (errors.length > 0) {
+    errorMsg.value = errors.join(', ')
+    alert(errorMsg.value)
+    return
+  }
+
+  try {
+    // Save the submitted form
+    await setDoc(doc(db, 'contactForms', user ? user.uid : Date.now().toString()), {
+      user_name: firstLastName.value,
+      email: email.value,
+      contactMessage: contactMessage.value,
+      createdAt: new Date().toISOString(),
+    })
+    alert('Your message has been submitted!')
+  } catch (err) {
+    errorMsg.value = err.message
+    alert('Error: ' + err.message)
+  }
 }
 </script>
 
@@ -26,6 +83,8 @@ export default {
           placeholder="Your Name"
           required
           class="form-control"
+          v-model="firstLastName"
+          :readonly="auth.currentUser"
         />
       </div>
       <div class="mb-3">
@@ -37,7 +96,10 @@ export default {
           placeholder="Your Email"
           required
           class="form-control"
+          v-model="email"
+          :readonly="auth.currentUser"
         />
+        <p v-if="auth.currentUser" class="text-muted"></p>
       </div>
       <div class="mb-3">
         <label for="message" class="form-label">Message:</label>
@@ -48,9 +110,10 @@ export default {
           rows="5"
           required
           class="form-control"
+          v-model="contactMessage"
         ></textarea>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="button" class="btn btn-primary" @click="contactSubmission">Submit</button>
     </form>
 
     <div class="contact-info mb-4">

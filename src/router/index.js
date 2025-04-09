@@ -17,8 +17,16 @@ const router = createRouter({
       component: HomeView,
     },
 
-    { path: '/register', component: () => import('../views/UserRegister.vue') },
-    { path: '/signin', component: () => import('../views/SignIn.vue') },
+    {
+      path: '/register',
+      component: () => import('../views/UserRegister.vue'),
+      meta: { requiresGuest: true },
+    },
+    {
+      path: '/signin',
+      component: () => import('../views/SignIn.vue'),
+      meta: { requiresGuest: true },
+    },
 
     // Refugee page routes:
     { path: '/refugees/how-we-help', name: 'howWeHelp', component: HowWeHelp },
@@ -100,7 +108,15 @@ router.beforeEach(async (to, from, next) => {
       alert('You do not have access. Please sign in.')
       next('/')
     }
+  } else if (to.matched.some((record) => record.meta.requiresGuest)) {
+    // Redirect logged in users to home page
+    if (await getCurrentUser()) {
+      next('/')
+    } else {
+      next()
+    }
   } else {
+    // For all other routes??
     next()
   }
 })
