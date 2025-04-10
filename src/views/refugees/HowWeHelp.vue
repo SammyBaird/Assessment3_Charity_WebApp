@@ -12,7 +12,6 @@ export default {
       rebuilding their lives, we lend a helping hand.
     </p>
 
-    <!-- Section: Legal and Social Support -->
     <div class="row mb-4">
       <div class="col-md-6 mb-3">
         <div class="card h-100 shadow-sm">
@@ -41,7 +40,6 @@ export default {
       </div>
     </div>
 
-    <!-- Section: Education &amp; Employment -->
     <div class="row mb-4">
       <div class="col-md-6 mb-3">
         <div class="card h-100 shadow-sm">
@@ -68,7 +66,6 @@ export default {
       </div>
     </div>
 
-    <!-- Section: Community Integration -->
     <div class="row mb-4">
       <div class="col">
         <div class="card h-100 shadow-sm">

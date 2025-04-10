@@ -23,10 +23,8 @@ const props = defineProps({
   },
 })
 
-// Store the travel time
+// Store the travel time and mode
 const travelTime = ref(null)
-
-// Store the travel method - Default to DRIVING
 const travelMode = ref('DRIVING')
 
 const mapContainer = ref(null)
@@ -139,7 +137,6 @@ watch(
 
 <template>
   <div>
-    <!-- Select desired travel mode -->
     <div style="margin-bottom: 1rem">
       <label for="travelMode" style="margin-right: 0.5rem">Select Travel Mode:</label>
       <select id="travelMode" v-model="travelMode">

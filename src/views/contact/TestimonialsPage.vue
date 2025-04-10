@@ -99,114 +99,98 @@ export default {
 </script>
 
 <template>
-  <div class="testimonials-page">
-    <h1>Reviews and Testimonials</h1>
-    <p>See what others have said about our service.</p>
-    <div class="rating-summary">
-      <p v-if="ratings.length > 0">
-        Average Rating: {{ averageRating.toFixed(1) }} (based on {{ ratings.length }} review<span
-          v-if="ratings.length > 1"
-          >s</span
-        >)
+  <div class="container py-5 testimonials-page">
+    <div class="text-center mb-5">
+      <h1 class="mb-4">Our Community Speaks</h1>
+      <p class="lead">
+        <!-- Text generate by GenAI -->
+        We truly value the feedback from our community – both our donors and refugees. Your reviews
+        help us understand what we are doing right and where we can improve. They drive us to meet
+        our core principles by ensuring that every service we provide addresses your real pain
+        points. We listen closely, act on your feedback, and strive to enhance our support and
+        services every day.
       </p>
-      <p v-else>No ratings yet.</p>
+      <p>
+        Whether you are a donor who wants to make an impact or a refugee seeking help and guidance,
+        your voice matters. Thank you for taking the time to share your experience.
+      </p>
     </div>
 
     <hr />
-    <div class="your-rating" v-if="currentUserEmail">
-      <h2 v-if="!userRatingExists">Submit Your Rating</h2>
-      <h2 v-else>Your rating has been submitted</h2>
+
+    <div class="rating-summary text-center mb-4">
+      <p v-if="ratings.length > 0" class="h5">
+        Average Rating: {{ averageRating.toFixed(1) }}
+        <small class="text-muted"
+          >(based on {{ ratings.length }} review<span v-if="ratings.length > 1">s</span>)</small
+        >
+      </p>
+      <p v-else class="h5">No ratings yet.</p>
+    </div>
+
+    <hr />
+
+    <div class="your-rating mb-5" v-if="currentUserEmail">
       <div v-if="!userRatingExists">
-        <div class="stars">
+        <h2 class="h4 text-center mb-3">Submit Your Rating</h2>
+        <div class="stars text-center mb-3">
           <span
             v-for="star in 5"
             :key="star"
-            class="star"
-            :class="{ filled: star <= currentUserRating }"
+            class="fs-1"
+            :class="star <= currentUserRating ? 'text-warning' : 'text-secondary'"
             @click="rate(star)"
+            style="cursor: pointer"
           >
             ★
           </span>
         </div>
-        <textarea
-          v-model="testimonialText"
-          placeholder="Enter your testimonial"
-          rows="3"
-        ></textarea>
-        <br />
-        <button @click="submitRating">Submit Rating</button>
+        <div class="mb-3">
+          <textarea
+            v-model="testimonialText"
+            class="form-control"
+            placeholder="Enter your testimonial"
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="text-center">
+          <button @click="submitRating" class="btn btn-primary">Submit Rating</button>
+        </div>
+      </div>
+      <div v-else class="text-center">
+        <h2 class="h4">Your rating has been submitted</h2>
       </div>
     </div>
-    <div v-else>
+    <div v-else class="text-center mb-5">
       <p>Please sign in to submit your rating.</p>
     </div>
 
     <hr />
-    <div class="ratings-list">
-      <h2>All Reviews</h2>
-      <div v-for="(rating, index) in ratings" :key="index" class="rating-item">
-        <p>
-          <strong>
-            {{ rating.userFirstName ? rating.userFirstName : rating.userEmail }}
-          </strong>
-          rated: {{ rating.rating }}/5
+
+    <div class="ratings-list mt-5">
+      <h2 class="h4 text-center mb-4">All Reviews</h2>
+      <div
+        v-for="(rating, index) in ratings"
+        :key="index"
+        class="rating-item mb-4 p-3 border rounded"
+      >
+        <p class="mb-1">
+          <strong>{{ rating.userFirstName ? rating.userFirstName : rating.userEmail }}</strong>
+          rated: <span class="text">{{ rating.rating }}</span
+          >/5
         </p>
-        <p>"{{ rating.testimonial }}"</p>
-        <hr />
+        <p class="mb-0">"{{ rating.testimonial }}"</p>
       </div>
     </div>
 
-    <p v-if="loading">Loading ratings...</p>
+    <div v-if="loading" class="text-center">
+      <p>Loading ratings...</p>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .testimonials-page {
-  text-align: center;
-  padding: 2rem;
   color: #000;
-}
-
-.rating-summary p,
-.ratings-list p {
-  font-size: 1.2rem;
-}
-
-.stars {
-  cursor: pointer;
-  margin-bottom: 1rem;
-}
-
-.star {
-  color: #ccc;
-  font-size: 2rem;
-  transition: color 0.2s;
-}
-
-.star.filled {
-  color: gold;
-}
-
-textarea {
-  width: 100%;
-  max-width: 500px;
-  margin: 1rem auto;
-  padding: 0.5rem;
-}
-
-button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.rating-item {
-  margin: 1rem auto;
-  max-width: 600px;
-  text-align: left;
-}
-
-hr {
-  margin: 1rem 0;
 }
 </style>

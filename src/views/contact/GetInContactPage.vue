@@ -8,6 +8,7 @@ const email = ref('')
 const firstLastName = ref('')
 const contactMessage = ref('')
 const errorMsg = ref('')
+const successMsg = ref('')
 
 const auth = getAuth()
 const db = getFirestore()
@@ -19,7 +20,7 @@ onMounted(() => {
   }
 })
 
-// Function to handle form submission
+// Form submission
 const contactSubmission = async () => {
   let errors = []
   const user = auth.currentUser
@@ -38,6 +39,7 @@ const contactSubmission = async () => {
     errors.push('Message must be less than 500 characters')
   }
 
+  // Email format check
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (email.value && !emailRegex.test(email.value)) {
     errors.push('Email format is invalid')
@@ -49,16 +51,27 @@ const contactSubmission = async () => {
     return
   }
 
+  // Prepare form data
+  const payloadData = {
+    user_name: firstLastName.value,
+    email: email.value,
+    contactMessage: contactMessage.value,
+    createdAt: new Date().toISOString(),
+  }
+
+  console.log('Sending payload:', payloadData)
+
   try {
-    // Save the submitted form
-    await setDoc(doc(db, 'contactForms', user ? user.uid : Date.now().toString()), {
-      user_name: firstLastName.value,
-      email: email.value,
-      contactMessage: contactMessage.value,
-      createdAt: new Date().toISOString(),
-    })
-    alert('Your message has been submitted!')
+    // Send the form data
+    const docId = Date.now().toString()
+    await setDoc(doc(db, 'contactForms', docId), payloadData)
+    successMsg.value = 'Your message has been submitted!'
+    alert(successMsg.value)
+
+    // Clear the form after successful submission
+    contactMessage.value = ''
   } catch (err) {
+    console.error('Error in contactSubmission:', err)
     errorMsg.value = err.message
     alert('Error: ' + err.message)
   }
@@ -73,7 +86,7 @@ const contactSubmission = async () => {
       the provided contact information.
     </p>
 
-    <form class="contact-form border p-4 rounded bg-light mb-4">
+    <form class="contact-form border p-4 rounded bg-light mb-4" @submit.prevent="contactSubmission">
       <div class="mb-3">
         <label for="name" class="form-label">Name:</label>
         <input
@@ -84,7 +97,7 @@ const contactSubmission = async () => {
           required
           class="form-control"
           v-model="firstLastName"
-          :readonly="auth.currentUser"
+          :readonly="!!auth.currentUser"
         />
       </div>
       <div class="mb-3">
@@ -97,9 +110,8 @@ const contactSubmission = async () => {
           required
           class="form-control"
           v-model="email"
-          :readonly="auth.currentUser"
+          :readonly="!!auth.currentUser"
         />
-        <p v-if="auth.currentUser" class="text-muted"></p>
       </div>
       <div class="mb-3">
         <label for="message" class="form-label">Message:</label>
@@ -113,14 +125,13 @@ const contactSubmission = async () => {
           v-model="contactMessage"
         ></textarea>
       </div>
-      <button type="button" class="btn btn-primary" @click="contactSubmission">Submit</button>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
     <div class="contact-info mb-4">
       <h2 class="mb-3">Other Contact Information</h2>
       <p><strong>Email:</strong> contact@newhorizons.org</p>
       <p><strong>Phone:</strong> +1 (123) 456-7890</p>
-      <!-- Using Monash Clayton as New Horizon HQ for Post -->
       <p><strong>Postal Address:</strong> Shop 4/21 Chancellors Walk, Clayton VIC 3168</p>
     </div>
     <div class="map-container">
