@@ -184,9 +184,4 @@ const handleSignOut = () => {
   </header>
 </template>
 
-<style scoped>
-.btn-link {
-  text-decoration: none;
-  color: inherit;
-}
-</style>
+<style scoped></style>

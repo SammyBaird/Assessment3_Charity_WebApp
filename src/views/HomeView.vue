@@ -106,16 +106,6 @@ We provide assistance in a number of ways. Check out our services to see how we 
 </template>
 
 <style scoped>
-.home-page {
-  color: #000;
-}
-
-.content {
-  position: relative;
-  z-index: 1;
-  margin-top: 5px;
-}
-
 .btn-donate {
   background-color: #f37f12;
   color: #fff;
@@ -127,21 +117,11 @@ We provide assistance in a number of ways. Check out our services to see how we 
 }
 
 .btn-primary {
-  background-color: #00a2ff;
   color: #fff;
-  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 20px;
-  font-size: 1rem;
   justify-self: center;
-}
-
-.img-fluid {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
 }
 
 .animated-gradient {

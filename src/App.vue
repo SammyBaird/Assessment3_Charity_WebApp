@@ -1,7 +1,7 @@
 <script setup>
 import { RouterView } from 'vue-router'
-import Header from '@/components/Header.vue'
-import Footer from '@/components/Footer.vue'
+import Header from '@/components/HeaderSection.vue'
+import Footer from '@/components/FooterSection.vue'
 </script>
 
 <!-- Bootstrap for Responsivness -->
@@ -17,13 +17,4 @@ import Footer from '@/components/Footer.vue'
   </div>
 </template>
 
-<style scoped>
-main {
-  margin-top: 100px;
-}
-
-.btn-link {
-  text-decoration: none;
-  color: inherit;
-}
-</style>
+<style scoped></style>

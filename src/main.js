@@ -1,5 +1,3 @@
-// import './assets/base.css'
-// import './assets/main.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 
@@ -21,7 +19,6 @@ const firebaseConfig = {
 }
 
 initializeApp(firebaseConfig)
-// const analytics = getAnalytics(app)
 
 const app = createApp(App)
 app.use(PrimeVue, {
@@ -33,5 +30,3 @@ app.config.devtools = false
 app.use(router)
 app.use(ToastService)
 app.mount('#app')
-
-// Test deployment

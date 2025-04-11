@@ -162,9 +162,4 @@ const updateProfileInfo = async () => {
   </div>
 </template>
 
-<style scoped>
-.complete-profile {
-  max-width: 600px;
-  margin: 0 auto;
-}
-</style>
+<style scoped></style>
