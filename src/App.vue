@@ -55,6 +55,7 @@ const handleSignOut = () => {
 // Check which route to push based on accountType
 const portalRoute = computed(() => {
   if (!isLoggedIn.value) return null
+  if (!accountType.value || accountType.value === '') return '/completeProfile'
   return accountType.value === 'donor' ? '/user-portal/donor' : '/user-portal/refugee'
 })
 </script>
@@ -133,19 +134,16 @@ const portalRoute = computed(() => {
             </ul>
           </li>
 
-          <!-- Only show User Portal if logged in -->
           <li v-if="isLoggedIn && portalRoute" class="nav-item">
             <RouterLink :to="portalRoute">User Portal</RouterLink>
           </li>
 
-          <!-- Only show Register and Sign In if not logged in -->
           <li v-if="!isLoggedIn" class="nav-item">
             <RouterLink to="/register">Register</RouterLink>
           </li>
           <li v-if="!isLoggedIn" class="nav-item">
             <RouterLink to="/signin">Sign In</RouterLink>
           </li>
-          <!-- Show Sign Out button if logged in -->
           <li>
             <button v-if="isLoggedIn" @click="handleSignOut" class="sign-out-button">
               Sign Out

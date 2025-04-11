@@ -22,23 +22,22 @@ onMounted(async () => {
   const worldTopo = await worldResponse.json()
   const countries = topojson.feature(worldTopo, worldTopo.objects.countries).features
 
-  // Query all documents from the refugeeNations collection
+  // Query refugeeNations collection
   const refNationSnapshot = await getDocs(collection(db, 'refugeeNations'))
-  // Build a mapping: nation name -> refugeeCount
+  // Map nation to refugee count
   const refugeeData = {}
   refNationSnapshot.docs.forEach((doc) => {
     const data = doc.data()
     refugeeData[data.nation] = data.refugeeCount
   })
 
-  // Build geoDataset: assign each country its refugee count or 0 if not found
   const geoDataset = countries.map((feature) => {
     const countryName = feature.properties.name
     const count = refugeeData[countryName] || 0
     return { feature, value: count }
   })
 
-  // Compute max refugee count among all countries for normalization
+  // Set maxCount to avoid division by zero
   const maxCount = Math.max(...geoDataset.map((d) => d.value), 1)
 
   const ctx = chartCanvas.value.getContext('2d')
@@ -54,10 +53,8 @@ onMounted(async () => {
             if (context && context.raw && typeof context.raw.value !== 'undefined') {
               const count = context.raw.value
               if (count === 0) return '#e0e0e0'
-              // Normalize count to get a ratio between 0 and 1
               const ratio = count / maxCount
-              // Map ratio to an HSL blue scale: lighter for low counts, darker for high counts
-              const lightness = 90 - ratio * 50 // from 90% (light) to 40% (dark)
+              const lightness = 90 - ratio * 50
               return `hsl(210, 100%, ${lightness}%)`
             }
             return '#e0e0e0'
@@ -73,7 +70,7 @@ onMounted(async () => {
       scales: {
         projection: {
           type: 'projection',
-          axis: 'x', // explicitly assign axis
+          axis: 'x',
           projection: 'equalEarth',
         },
       },

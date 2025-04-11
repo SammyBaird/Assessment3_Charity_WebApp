@@ -1,20 +1,3 @@
-<template>
-  <div class="donation-form">
-    <h2>Make a Donation</h2>
-    <form @submit.prevent="submitDonation">
-      <div>
-        <label for="donorName">Name:</label>
-        <input id="donorName" v-model="donation.name" required />
-      </div>
-      <div>
-        <label for="amount">Amount:</label>
-        <input id="amount" type="number" v-model="donation.amount" required />
-      </div>
-      <button type="submit">Donate</button>
-    </form>
-  </div>
-</template>
-
 <script>
 export default {
   name: 'DonationForm',
@@ -34,6 +17,23 @@ export default {
   },
 }
 </script>
+
+<template>
+  <div class="donation-form">
+    <h2>Make a Donation</h2>
+    <form @submit.prevent="submitDonation">
+      <div>
+        <label for="donorName">Name:</label>
+        <input id="donorName" v-model="donation.name" required />
+      </div>
+      <div>
+        <label for="amount">Amount:</label>
+        <input id="amount" type="number" v-model="donation.amount" required />
+      </div>
+      <button type="submit">Donate</button>
+    </form>
+  </div>
+</template>
 
 <style scoped>
 .donation-form {

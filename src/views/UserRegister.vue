@@ -1,8 +1,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { getFirestore, doc, setDoc } from 'firebase/firestore'
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from 'firebase/auth'
+import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore'
 
 const email = ref('')
 const password = ref('')
@@ -100,6 +106,43 @@ const register = async () => {
     alert('Error: ' + err.message)
   }
 }
+
+// Google registration function
+const googleRegister = async () => {
+  try {
+    const provider = new GoogleAuthProvider()
+    const result = await signInWithPopup(auth, provider)
+    const user = result.user
+
+    // Check if the user document exists
+    const userDocRef = doc(db, 'users', user.uid)
+    const userDocSnap = await getDoc(userDocRef)
+
+    if (!userDocSnap.exists()) {
+      const names = user.displayName?.split(' ') || []
+      const first = names[0] || ''
+      const last = names.slice(1).join(' ') || ''
+
+      await setDoc(userDocRef, {
+        firstName: first,
+        lastName: last,
+        email: user.email,
+        accountType: '',
+        gender: gender.value || 'Prefer not to say',
+        nationality: '',
+        region: '',
+        createdAt: new Date().toISOString(),
+      })
+      router.push('/completeProfile')
+    } else {
+      console.log('User is already registered')
+      router.push('/')
+    }
+  } catch (err) {
+    errorMsg.value = err.message
+    alert('Error: ' + err.message)
+  }
+}
 </script>
 
 <template>
@@ -151,6 +194,7 @@ const register = async () => {
 
     <div class="button-group">
       <button @click="register">Register</button>
+      <button @click="googleRegister">Register with Google</button>
       <button @click="$router.push('/signin')">Have an Account? Sign In</button>
     </div>
     <p v-if="errorMsg" class="error">{{ errorMsg }}</p>

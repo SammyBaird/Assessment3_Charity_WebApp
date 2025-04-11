@@ -27,8 +27,10 @@ We provide assistance in a number of ways. Check out our services to see how we 
         },
         {
           id: 3,
-          title: 'Post Three',
-          content: 'More updates on our mission in this third post.',
+          title: 'Read some testimonials',
+          content: `
+      Hear from those whose lives have been transformed by your generosity:
+          `,
         },
       ],
     }
@@ -46,7 +48,6 @@ We provide assistance in a number of ways. Check out our services to see how we 
       />
     </div>
 
-    <!-- Donate Button Section (placed below the image) -->
     <div class="text-center my-5">
       <RouterLink
         to="/donation/donation-options"
@@ -55,7 +56,7 @@ We provide assistance in a number of ways. Check out our services to see how we 
         Donate Today!
       </RouterLink>
     </div>
-    <!-- Welcome Content -->
+
     <div class="content text-center my-5" style="margin-top: 40px">
       <h1 class="mb-4 animated-gradient">Welcome to New Horizons</h1>
       <p class="lead">
@@ -67,7 +68,7 @@ We provide assistance in a number of ways. Check out our services to see how we 
       <p class="lead">Join us in our mission to provide assistance and hope to those in need.</p>
     </div>
 
-    <!-- Post Cards -->
+    <!-- Cards -->
     <div class="con-cards">
       <div class="row">
         <div v-for="post in posts" :key="post.id" class="col-md-4 mb-4">
@@ -88,7 +89,11 @@ We provide assistance in a number of ways. Check out our services to see how we 
                 >
                   Read More
                 </RouterLink>
-                <RouterLink v-else-if="post.id === 3" to="/post-three" class="btn btn-primary">
+                <RouterLink
+                  v-else-if="post.id === 3"
+                  to="/contact/testimonials"
+                  class="btn btn-primary"
+                >
                   Discover More
                 </RouterLink>
               </div>

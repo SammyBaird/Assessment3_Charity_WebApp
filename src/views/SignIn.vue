@@ -72,9 +72,9 @@ const singInWithGoogle = () => {
       if (docSnap.exists()) {
         const data = docSnap.data()
         if (data.accountType === 'donor') {
-          router.push('/donor-portal')
+          router.push('/user-portal/donor')
         } else if (data.accountType === 'refugee') {
-          router.push('/refugee-portal')
+          router.push('/user-portal/refugee')
         } else {
           console.warn('Account type not recognized. Redirecting to home.')
           router.push('/')

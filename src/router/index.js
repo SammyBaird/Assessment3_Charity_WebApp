@@ -27,6 +27,10 @@ const router = createRouter({
       component: () => import('../views/SignIn.vue'),
       meta: { requiresGuest: true },
     },
+    {
+      path: '/completeProfile',
+      component: () => import('../views/completeProfile.vue'),
+    },
 
     // Refugee page routes:
     { path: '/refugees/how-we-help', name: 'howWeHelp', component: HowWeHelp },

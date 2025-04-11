@@ -1,33 +1,47 @@
-// Import the full firebase-functions package for configuration access.
-const functions = require('firebase-functions')
-const { onRequest } = require('firebase-functions/v2/https')
+const { onDocumentCreated } = require('firebase-functions/v2/firestore')
 const logger = require('firebase-functions/logger')
-
-// SendGrid API key setup
 const sgMail = require('@sendgrid/mail')
-// Get the API key from Firebase environment configuration.
+const functions = require('firebase-functions')
+const admin = require('firebase-admin')
+const cors = require('cors')({ origin: true })
+
+admin.initializeApp()
+
+// Get the SendGrid API
 const sendGridApiKey = functions.config().sendgrid.key
 sgMail.setApiKey(sendGridApiKey)
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
-
-exports.sendEmail = onRequest(async (req, res) => {
-  try {
-    const { to, subject, text } = req.body
+// This was a nightmare to set up! 10/10 annoying.
+exports.sendEmail = onDocumentCreated(
+  { document: 'contactForms/{docId}', region: 'australia-southeast1' },
+  async (event) => {
+    const data = event.data.data()
     const msg = {
-      to: to || 'bairdsamuel7@gmail.com', // Use provided or default recipient.
-      from: 'bairdsamuel7@gmail.com', // This sender must be verified in SendGrid.
-      subject: subject || 'Test Email',
-      text: text || 'This is a test email sent from Firebase Functions!',
-      html: `<strong>${text || 'No content provided'}</strong>`, // HTML content.
+      from: 'bairdsamuel7@gmail.com',
+      to: data.email,
+      subject: 'Thank you for contacting New Horizons',
+      text: `Hi ${data.user_name},\n\nThank you for your message. We have received your enquiry and will get back to you shortly.\n\nBest regards,\nThe New Horizons Team`,
+      html: `<p>Hi ${data.user_name},</p>
+             <p>Thank you for your message. We have received your enquiry and will get back to you shortly.</p>
+             <p>Best regards,<br>The New Horizons Team</p>`,
     }
 
-    // Send the email using SendGrid.
-    await sgMail.send(msg)
-    res.status(200).send('Email sent successfully!')
-  } catch (error) {
-    console.error('Error sending email:', error)
-    res.status(500).send('Failed to send email.')
-  }
-})
+    try {
+      cors((req, res) => {
+        sgMail
+          .send(msg)
+          .then(() => {
+            logger.info('Email sent successfully to:', data.email)
+            res.status(200).send('Email sent successfully.')
+          })
+          .catch((error) => {
+            logger.error('Error sending email:', error)
+            res.status(500).send('Error sending email.')
+          })
+      })
+    } catch (error) {
+      logger.error('Unexpected error:', error)
+    }
+    return null
+  },
+)
