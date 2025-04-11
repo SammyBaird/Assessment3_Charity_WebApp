@@ -1,10 +1,3 @@
-<template>
-  <div class="analytics">
-    <h1>Charity Spending Analytics</h1>
-    <canvas ref="chartCanvas" id="spendingChart"></canvas>
-  </div>
-</template>
-
 <script setup>
 import { ref, onMounted } from 'vue'
 import { getFirestore, collection, getDocs } from 'firebase/firestore'
@@ -114,7 +107,7 @@ onMounted(async () => {
             display: false,
           },
           ticks: {
-            autoSkip: false,
+            autoSkip: true,
             maxRotation: 45,
             minRotation: 45,
           },
@@ -130,7 +123,30 @@ onMounted(async () => {
     },
   })
 })
+
+function exportCSV() {
+  // Replace with your Cloud Function URL
+  const url = 'https://australia-southeast1-assess-3-charity.cloudfunctions.net/exportSpendingCSV'
+  window.open(url, '_blank')
+}
 </script>
+
+<template>
+  <div class="analytics">
+    <h1>Charity Spending Analytics</h1>
+    <canvas ref="chartCanvas" id="spendingChart"></canvas>
+    <p>
+      This chart shows the monthly spending breakdown for our charity. The categories include
+      Administrative, Programs, Fundraising, Operations, Outreach, and Grants. Each category is
+      represented by a different color.
+    </p>
+    <p>
+      We pride ourselves on transparency and accountability. If you wish to see more detailed
+      account of our spending, you can export the data in CSV format here
+    </p>
+    <button class="btn btn-primary ms-2" @click="exportCSV">Export as CSV</button>
+  </div>
+</template>
 
 <style scoped>
 .analytics {
