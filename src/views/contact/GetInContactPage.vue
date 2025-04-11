@@ -1,7 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { getAuth } from 'firebase/auth'
-import { getFirestore, doc, setDoc } from 'firebase/firestore'
 import MapTest from '../../components/MapTest.vue'
 import axios from 'axios'
 
