@@ -31,7 +31,7 @@ const contactSubmission = async () => {
     errors.push('Message must be less than 500 characters')
   }
 
-  // Basic Email regex check (or use a more robust library)
+  // Basic Email check
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (email.value && !emailRegex.test(email.value)) {
     errors.push('Email format is invalid')
@@ -43,7 +43,7 @@ const contactSubmission = async () => {
     return
   }
 
-  // Prepare payload matching what the Cloud Function expects
+  // Prepare payload
   const payloadData = {
     name: firstLastName.value,
     email: email.value,
@@ -53,7 +53,7 @@ const contactSubmission = async () => {
   console.log('Sending payload:', payloadData)
 
   try {
-    // Use the correct URL for your deployed Cloud Function endpoint
+    // Use the funciton endpoint
     const functionUrl = 'https://us-central1-assess-3-charity.cloudfunctions.net/contactFormSecure'
     const response = await axios.post(functionUrl, payloadData, {
       headers: { 'Content-Type': 'application/json' },
