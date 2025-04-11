@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { getAuth } from 'firebase/auth'
 import { getFirestore, doc, setDoc } from 'firebase/firestore'
 import MapTest from '../../components/MapTest.vue'
+import axios from 'axios'
 
 const email = ref('')
 const firstLastName = ref('')
@@ -11,7 +12,6 @@ const errorMsg = ref('')
 const successMsg = ref('')
 
 const auth = getAuth()
-const db = getFirestore()
 
 onMounted(() => {
   if (auth.currentUser) {
@@ -20,26 +20,18 @@ onMounted(() => {
   }
 })
 
-// Form submission
 const contactSubmission = async () => {
   let errors = []
-  const user = auth.currentUser
-  if (user) {
-    email.value = user.email
-    firstLastName.value = user.displayName
-  }
 
   // Validate fields
   if (!email.value.trim()) errors.push('Email is required')
   if (!firstLastName.value.trim()) errors.push('Name is required')
   if (!contactMessage.value.trim()) errors.push('Message is required')
-
-  // Message length limit
   if (contactMessage.value.length > 500) {
     errors.push('Message must be less than 500 characters')
   }
 
-  // Email format check
+  // Basic Email regex check (or use a more robust library)
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (email.value && !emailRegex.test(email.value)) {
     errors.push('Email format is invalid')
@@ -51,29 +43,31 @@ const contactSubmission = async () => {
     return
   }
 
-  // Prepare form data
+  // Prepare payload matching what the Cloud Function expects
   const payloadData = {
-    user_name: firstLastName.value,
+    name: firstLastName.value,
     email: email.value,
-    contactMessage: contactMessage.value,
-    createdAt: new Date().toISOString(),
+    message: contactMessage.value,
   }
 
   console.log('Sending payload:', payloadData)
 
   try {
-    // Send the form data
-    const docId = Date.now().toString()
-    await setDoc(doc(db, 'contactForms', docId), payloadData)
-    successMsg.value = 'Your message has been submitted!'
+    // Use the correct URL for your deployed Cloud Function endpoint
+    const functionUrl = 'https://us-central1-assess-3-charity.cloudfunctions.net/contactFormSecure'
+    const response = await axios.post(functionUrl, payloadData, {
+      headers: { 'Content-Type': 'application/json' },
+    })
+
+    successMsg.value = response.data
     alert(successMsg.value)
 
     // Clear the form after successful submission
     contactMessage.value = ''
   } catch (err) {
     console.error('Error in contactSubmission:', err)
-    errorMsg.value = err.message
-    alert('Error: ' + err.message)
+    errorMsg.value = err.response ? err.response.data : err.message
+    alert('Error: ' + errorMsg.value)
   }
 }
 </script>
@@ -92,7 +86,6 @@ const contactSubmission = async () => {
         <input
           type="text"
           id="name"
-          name="name"
           placeholder="Your Name"
           required
           class="form-control"
@@ -105,7 +98,6 @@ const contactSubmission = async () => {
         <input
           type="email"
           id="email"
-          name="email"
           placeholder="Your Email"
           required
           class="form-control"
@@ -117,7 +109,6 @@ const contactSubmission = async () => {
         <label for="message" class="form-label">Message:</label>
         <textarea
           id="message"
-          name="message"
           placeholder="Your Message"
           rows="5"
           required
