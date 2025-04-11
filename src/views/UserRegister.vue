@@ -145,118 +145,96 @@ const googleRegister = async () => {
 }
 </script>
 
+<!-- Bootstrap for Responsivness -->
 <template>
-  <h1>Create an Account</h1>
-  <div class="registration">
-    <div class="name-inputs">
-      <input type="text" v-model="firstName" placeholder="First Name" required />
-      <input type="text" v-model="lastName" placeholder="Last Name" required />
+  <div class="container mt-5">
+    <h1 class="text-center text-primary mb-4">Create an Account</h1>
+    <div class="card p-4 shadow-sm">
+      <div class="row mb-3">
+        <div class="col">
+          <input
+            type="text"
+            v-model="firstName"
+            class="form-control"
+            placeholder="First Name"
+            required
+          />
+        </div>
+        <div class="col">
+          <input
+            type="text"
+            v-model="lastName"
+            class="form-control"
+            placeholder="Last Name"
+            required
+          />
+        </div>
+      </div>
+      <div class="mb-3">
+        <input type="email" v-model="email" class="form-control" placeholder="Email" required />
+      </div>
+      <div class="mb-3">
+        <input
+          type="password"
+          v-model="password"
+          class="form-control"
+          placeholder="Password"
+          required
+          minlength="6"
+          maxlength="16"
+        />
+      </div>
+      <div class="mb-3">
+        <input
+          type="password"
+          v-model="confirmPassword"
+          class="form-control"
+          placeholder="Confirm Password"
+          required
+          minlength="6"
+          maxlength="16"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="accountType" class="form-label">Account Type:</label>
+        <select v-model="accountType" id="accountType" class="form-select" required>
+          <option value="donor">Donor</option>
+          <option value="refugee">Refugee</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="gender" class="form-label">Gender:</label>
+        <select v-model="gender" id="gender" class="form-select">
+          <option value="Female">Female</option>
+          <option value="Male">Male</option>
+          <option value="Non-binary / Gender diverse">Non-binary / Gender diverse</option>
+          <option value="Prefer not to say">Prefer not to say</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="nationality" class="form-label">Nationality:</label>
+        <select v-model="nationality" id="nationality" class="form-select" required>
+          <option disabled value="">Please select your country</option>
+          <option v-for="country in countries" :key="country.alpha2Code" :value="country">
+            {{ country.name }}
+          </option>
+        </select>
+      </div>
+      <div class="d-flex justify-content-center gap-2">
+        <button @click="register" class="btn btn-primary">Register</button>
+        <button @click="googleRegister" class="btn btn-secondary">Register with Google</button>
+        <button @click="$router.push('/signin')" class="btn btn-info">
+          Have an Account? Sign In
+        </button>
+      </div>
+      <p v-if="errorMsg" class="text-danger text-center mt-3">{{ errorMsg }}</p>
     </div>
-    <input type="text" v-model="email" placeholder="Email" required />
-    <input
-      type="password"
-      v-model="password"
-      placeholder="Password"
-      required
-      minlength="6"
-      maxlength="16"
-    />
-    <input
-      type="password"
-      v-model="confirmPassword"
-      placeholder="Confirm Password"
-      required
-      minlength="6"
-      maxlength="16"
-    />
-
-    <label for="accountType">Account Type:</label>
-    <select v-model="accountType" id="accountType" required>
-      <option value="donor">Donor</option>
-      <option value="refugee">Refugee</option>
-    </select>
-
-    <label for="gender">Gender:</label>
-    <select v-model="gender" id="gender">
-      <option value="Female">Female</option>
-      <option value="Male">Male</option>
-      <option value="Non-binary / Gender diverse">Non-binary / Gender diverse</option>
-      <option value="Prefer not to say">Prefer not to say</option>
-    </select>
-
-    <label for="nationality">Nationality:</label>
-    <select v-model="nationality" id="nationality" required>
-      <option disabled value="">Please select your country</option>
-      <option v-for="country in countries" :key="country.alpha2Code" :value="country">
-        {{ country.name }}
-      </option>
-    </select>
-
-    <div class="button-group">
-      <button @click="register">Register</button>
-      <button @click="googleRegister">Register with Google</button>
-      <button @click="$router.push('/signin')">Have an Account? Sign In</button>
-    </div>
-    <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
   </div>
 </template>
 
 <style scoped>
-h1 {
-  text-align: center;
-  grid-column: 1 / -1;
-  margin-bottom: 3rem;
-  color: #4792bd;
-}
-
-.button-group {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.name-inputs {
-  display: flex;
-  gap: 1rem;
-}
-
-.name-inputs input {
-  flex: 1;
-}
-
-.registration {
+.card {
   max-width: 600px;
-  margin: 2rem auto;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #ffffff;
-  grid-column: 1 / -1;
-  justify-self: center;
-}
-
-.registration input,
-.registration select {
-  width: 100%;
-  padding: 0.75rem;
-  margin: 0.5rem 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-.registration button {
-  padding: 0.75rem 1.5rem;
-  background-color: #4792bd;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.registration button:hover {
-  background-color: #2c3e50;
-}
-.error {
-  color: red;
-  margin-top: 1rem;
+  margin: 0 auto;
 }
 </style>

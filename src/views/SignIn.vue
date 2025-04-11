@@ -1,12 +1,3 @@
-<template>
-  <hi>Sign In To Your Account</hi>
-  <p><input type="text" placeholder="Email" v-model="email" /></p>
-  <p><input type="password" placeholder="Password" v-model="password" /></p>
-  <p v-if="errMsg" class="error">{{ errMsg }}</p>
-  <p><button @click="signIn">Submit</button></p>
-  <p><button @click="singInWithGoogle">Sign In With Google</button></p>
-</template>
-
 <script setup>
 import { ref } from 'vue'
 import {
@@ -90,3 +81,25 @@ const singInWithGoogle = () => {
     })
 }
 </script>
+
+<!-- Bootstrap for Responsivness -->
+<template>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Sign In To Your Account</h1>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="form-group mb-3">
+          <input type="text" class="form-control" placeholder="Email" v-model="email" />
+        </div>
+        <div class="form-group mb-3">
+          <input type="password" class="form-control" placeholder="Password" v-model="password" />
+        </div>
+        <p v-if="errMsg" class="text-danger">{{ errMsg }}</p>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" @click="signIn">Submit</button>
+          <button class="btn btn-danger" @click="singInWithGoogle">Sign In With Google</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

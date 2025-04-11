@@ -1,3 +1,19 @@
+<script>
+export default {
+  name: 'FeedView',
+  data() {
+    return {
+      posts: [
+        { id: 1, title: 'Post One', content: 'This is the first post on our feed.' },
+        { id: 2, title: 'Post Two', content: 'Here is some more information in the second post.' },
+        { id: 3, title: 'Post Three', content: 'More updates on our mission in this third post.' },
+      ],
+    }
+  },
+}
+</script>
+
+<!-- Bootstrap for Responsivness -->
 <template>
   <div class="container py-4 feed-page">
     <h1 class="mb-4">Your Assistance Hub</h1>
@@ -13,21 +29,6 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: 'FeedView',
-  data() {
-    return {
-      posts: [
-        { id: 1, title: 'Post One', content: 'This is the first post on our feed.' },
-        { id: 2, title: 'Post Two', content: 'Here is some more information in the second post.' },
-        { id: 3, title: 'Post Three', content: 'More updates on our mission in this third post.' },
-      ],
-    }
-  },
-}
-</script>
 
 <style scoped>
 .feed-page {

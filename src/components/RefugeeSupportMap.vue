@@ -90,10 +90,13 @@ onMounted(async () => {
 })
 </script>
 
+<!-- Bootstrap for Responsivness -->
 <template>
-  <div class="refugee-map">
-    <h1>Where Our Refugees Are From</h1>
-    <canvas ref="chartCanvas" style="width: 100%; height: 600px"></canvas>
+  <div class="refugee-map container">
+    <h1 class="text-center my-4"></h1>
+    <div class="row justify-content-center">
+      <canvas ref="chartCanvas" style="width: 100%; height: 600px"></canvas>
+    </div>
   </div>
 </template>
 
@@ -102,5 +105,17 @@ onMounted(async () => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+}
+
+.refugee-map h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #343a40;
+}
+
+.refugee-map canvas {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 </style>

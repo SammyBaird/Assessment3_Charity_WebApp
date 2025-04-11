@@ -65,20 +65,6 @@ const router = createRouter({
       component: () => import('../views/contact/TestimonialsPage.vue'),
     },
 
-    // Lazy-load Get Invovled page routes:
-    {
-      path: '/getinvolved/volunteering',
-      component: () => import('../views/getinvolved/VolunteeringPage.vue'),
-    },
-    {
-      path: '/getinvolved/fundraising',
-      component: () => import('../views/getinvolved/FundraisingPage.vue'),
-    },
-    {
-      path: '/getinvolved/corporate',
-      component: () => import('../views/getinvolved/CorporatePage.vue'),
-    },
-
     // Lazy-load User Portal page routes:
     {
       path: '/user-portal/donor',
