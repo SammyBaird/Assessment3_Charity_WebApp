@@ -125,8 +125,7 @@ onMounted(async () => {
 })
 
 function exportCSV() {
-  // Replace with your Cloud Function URL
-  const url = 'https://australia-southeast1-assess-3-charity.cloudfunctions.net/exportSpendingCSV'
+  const url = 'https://us-central1-assess-3-charity.cloudfunctions.net/exportSpendingCSV'
   window.open(url, '_blank')
 }
 </script>

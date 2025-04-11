@@ -71,6 +71,7 @@ const contactSubmission = async () => {
 }
 </script>
 
+<!-- Bootstrap for Responsivness -->
 <template>
   <div class="contact-page container my-5">
     <h1 class="mb-4 text-center">Contact Us</h1>
@@ -120,8 +121,8 @@ const contactSubmission = async () => {
 
     <div class="contact-info mb-4">
       <h2 class="mb-3">Other Contact Information</h2>
-      <p><strong>Email:</strong> contact@newhorizons.org</p>
-      <p><strong>Phone:</strong> +1 (123) 456-7890</p>
+      <p><strong>Email:</strong> info@newhorizons.org</p>
+      <p><strong>Phone:</strong> +123 456 7890</p>
       <p><strong>Postal Address:</strong> Shop 4/21 Chancellors Walk, Clayton VIC 3168</p>
     </div>
     <div class="map-container">
@@ -131,21 +132,4 @@ const contactSubmission = async () => {
   </div>
 </template>
 
-<style scoped>
-.contact-page {
-  color: #000000;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-.map-container {
-  width: 100%;
-  margin-top: 2rem;
-}
-p {
-  color: #000000;
-}
-</style>
+<style scoped></style>

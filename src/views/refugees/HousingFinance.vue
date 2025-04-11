@@ -4,6 +4,7 @@ export default {
 }
 </script>
 
+<!-- Bootstrap for Responsivness -->
 <template>
   <div class="container my-5 housing-page">
     <h1 class="text-center mb-4">Housing and Financial Assistance</h1>
@@ -71,16 +72,4 @@ export default {
   </div>
 </template>
 
-<style scoped>
-.housing-page {
-  color: #000;
-}
-
-.card-title {
-  color: #2c3e50;
-}
-
-.card-text {
-  color: #34495e;
-}
-</style>
+<style scoped></style>

@@ -1,20 +1,16 @@
-import './assets/base.css'
-import './assets/main.css'
+// import './assets/base.css'
+// import './assets/main.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
 
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-
-// Import the functions you need from the SDKs you need
+import PrimeVue from 'primevue/config'
+import Aura from '@primevue/themes/aura'
+import ToastService from 'primevue/toastservice'
 import { initializeApp } from 'firebase/app'
-// import { getAnalytics } from 'firebase/analytics'
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -28,8 +24,14 @@ initializeApp(firebaseConfig)
 // const analytics = getAnalytics(app)
 
 const app = createApp(App)
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+  },
+})
 app.config.devtools = false
 app.use(router)
+app.use(ToastService)
 app.mount('#app')
 
 // Test deployment

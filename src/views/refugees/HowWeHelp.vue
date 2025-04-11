@@ -4,6 +4,7 @@ export default {
 }
 </script>
 
+<!-- Bootstrap for Responsivness -->
 <template>
   <div class="container my-5">
     <h1 class="text-center mb-4">How We Help Refugees</h1>
@@ -90,13 +91,4 @@ export default {
   </div>
 </template>
 
-<style scoped>
-h1,
-h2 {
-  color: #2c3e50;
-}
-.card-text {
-  font-size: 1rem;
-  color: #34495e;
-}
-</style>
+<style scoped></style>
