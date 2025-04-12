@@ -30,3 +30,4 @@ coverage
 .env
 
 *.tsbuildinfo
+functions/.env.default

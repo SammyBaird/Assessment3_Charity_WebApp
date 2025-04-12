@@ -2,11 +2,15 @@ const { onRequest } = require('firebase-functions/v2/https')
 const logger = require('firebase-functions/logger')
 const validator = require('validator')
 const rateLimiter = require('express-rate-limit')
-const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const cors = require('cors')({ origin: true })
+const sgMail = require('@sendgrid/mail')
 
 admin.initializeApp()
+
+// Trying to do SG API again!
+const sendGridApiKey = process.env.SENDGRID_KEY
+sgMail.setApiKey(sendGridApiKey)
 
 const limiter = rateLimiter({
   windowMs: 60 * 1000,
@@ -41,13 +45,29 @@ exports.contactFormSecure = onRequest((req, res) => {
         message: safeMessage,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
       }
+      // Attempt to submit form and send email reply
       try {
         await admin.firestore().collection('contactForms').add(submission)
+        // Dynamic template from SendGrid! Finally have this working OMG!
+        const replyMsg = {
+          to: email,
+          from: 'bairdsamuel7@gmail.com',
+          template_id: 'd-f6bb867b65684688a676b5403f60c564',
+          dynamic_template_data: {
+            name: safeName,
+            message: safeMessage,
+          },
+        }
+        await sgMail.send(replyMsg)
+        res
+          .status(200)
+          .send(
+            'Submission received and email sent. Please check your inbox and/or spam folder for confirmation.',
+          )
       } catch (firestoreError) {
-        logger.error('Error saving submission to Firestore', firestoreError)
-        return res.status(500).send('Failed to save submission.')
+        logger.error('Error processing submission', firestoreError)
+        return res.status(500).send('Failed to process submission.')
       }
-      res.status(200).send('Submission received.')
     })
   })
 })
