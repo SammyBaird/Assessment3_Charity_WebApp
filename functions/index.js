@@ -5,11 +5,16 @@ const rateLimiter = require('express-rate-limit')
 const admin = require('firebase-admin')
 const cors = require('cors')({ origin: true })
 const sgMail = require('@sendgrid/mail')
+const { InferenceClient } = require('@huggingface/inference')
 
 admin.initializeApp()
 
-// Trying to do SG API again!
+// SendGrid and Hugging Face Requirements
 const sendGridApiKey = process.env.SENDGRID_KEY
+const HUGGING_FACES_API_KEY = process.env.HUGGING_FACES_API_KEY
+const AI_PROMPT = process.env.AI_PROMPT
+const hfClient = new InferenceClient(HUGGING_FACES_API_KEY)
+
 sgMail.setApiKey(sendGridApiKey)
 
 const limiter = rateLimiter({
@@ -115,10 +120,12 @@ exports.exportSpendingCSV = onRequest((req, res) => {
   cors(req, res, async () => {
     try {
       const db = admin.firestore()
+      // Getting all documents from the spending collection
       const snapshot = await db.collection('spending').get()
 
       console.log(`Found ${snapshot.size} documents in the spending collection.`)
 
+      // Setting CSV header
       const header = [
         'Month',
         'Administrative',
@@ -130,6 +137,7 @@ exports.exportSpendingCSV = onRequest((req, res) => {
       ]
       let csvContent = header.join(',') + '\n'
 
+      // Validating fields and adding to CSV
       snapshot.forEach((doc) => {
         const data = doc.data()
         const row = [
@@ -144,12 +152,61 @@ exports.exportSpendingCSV = onRequest((req, res) => {
         csvContent += row.join(',') + '\n'
       })
 
+      // Setting the response for CSV download
       res.set('Content-Type', 'text/csv')
       res.set('Content-Disposition', 'attachment; filename="spending_data.csv"')
       res.status(200).send(csvContent)
     } catch (error) {
       logger.error('Error generating CSV', error)
       res.status(500).send('Error generating CSV')
+    }
+  })
+})
+
+// Super simple version of a chatbot using hugging face
+// Below approach was leveraged from the hugging face deepseek model page
+// I do this a bit at work so should be cool if it works :)
+exports.hfChatbot = onRequest((req, res) => {
+  cors(req, res, async () => {
+    if (req.method !== 'POST') {
+      return res.status(405).send('Method Not Allowed')
+    }
+
+    const { prompt } = req.body
+    if (!prompt) {
+      return res.status(400).send('Prompt is required.')
+    }
+
+    // Doing some basic AI alignment with system prompt
+    const messagesArray = [
+      { role: 'system', content: AI_PROMPT },
+      { role: 'user', content: prompt },
+    ]
+
+    try {
+      // Use HF client to call endpoint
+      const chatCompletion = await hfClient.chatCompletion({
+        provider: 'nebius',
+        model: 'deepseek-ai/DeepSeek-V3-0324',
+        messages: messagesArray,
+        max_tokens: 512,
+      })
+
+      // Returning just the bot message with some basic error handling
+      const botMessage =
+        chatCompletion?.choices &&
+        chatCompletion.choices.length > 0 &&
+        chatCompletion.choices[0].message.content
+          ? chatCompletion.choices[0].message.content
+          : 'No response from bot.'
+
+      res.status(200).json(botMessage)
+    } catch (error) {
+      logger.error(
+        'Error calling Hugging Face API:',
+        error.response ? error.response.data : error.message,
+      )
+      res.status(500).send('Failed to generate response.')
     }
   })
 })

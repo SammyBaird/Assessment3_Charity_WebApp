@@ -59,7 +59,6 @@ const router = createRouter({
 
     // Lazy-load Contact page routes:
     { path: '/contact/contact', component: () => import('../views/contact/GetInContactPage.vue') },
-    { path: '/contact/help-line', component: () => import('../views/contact/HelpLinePage.vue') },
     {
       path: '/contact/testimonials',
       component: () => import('../views/contact/TestimonialsPage.vue'),
