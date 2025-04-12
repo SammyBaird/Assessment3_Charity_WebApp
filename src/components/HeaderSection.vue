@@ -63,15 +63,18 @@ const handleSignOut = () => {
 <template>
   <header class="bg-light fixed-top shadow">
     <div class="container">
-      <div class="d-flex align-items-center justify-content-between flex-nowrap py-2">
-        <RouterLink to="/">
-          <img
-            class="img-fluid"
-            src="@/assets/new_horizons.svg"
-            alt="Logo"
-            style="max-height: 60px"
-          />
-        </RouterLink>
+      <div class="d-flex align-items-center flex-nowrap py-2">
+        <div class="text-center">
+          <RouterLink to="/">
+            <img
+              class="img-fluid"
+              src="@/assets/new_horizons.svg"
+              alt="Logo"
+              style="max-height: 60px"
+            />
+            <div>Home</div>
+          </RouterLink>
+        </div>
         <nav>
           <ul class="nav mb-0">
             <li class="nav-item dropdown">
@@ -129,11 +132,6 @@ const handleSignOut = () => {
                 <li>
                   <RouterLink class="dropdown-item" to="/contact/contact">
                     Contact Page
-                  </RouterLink>
-                </li>
-                <li>
-                  <RouterLink class="dropdown-item" to="/contact/help-line">
-                    Help Line and Live Chat (Preview)
                   </RouterLink>
                 </li>
                 <li>
