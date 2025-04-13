@@ -12,6 +12,8 @@ const successMsg = ref('')
 
 const auth = getAuth()
 
+const cloudFN = 'https://us-central1-assess-3-charity.cloudfunctions.net/contactFormSecure'
+
 onMounted(() => {
   if (auth.currentUser) {
     email.value = auth.currentUser.email
@@ -53,8 +55,7 @@ const contactSubmission = async () => {
 
   try {
     // Use the funciton endpoint
-    const functionUrl = 'https://us-central1-assess-3-charity.cloudfunctions.net/contactFormSecure'
-    const response = await axios.post(functionUrl, payloadData, {
+    const response = await axios.post(cloudFN, payloadData, {
       headers: { 'Content-Type': 'application/json' },
     })
 
@@ -74,8 +75,8 @@ const contactSubmission = async () => {
 <!-- Bootstrap for Responsivness -->
 <template>
   <div class="contact-page container my-5">
-    <h1 class="mb-4 text-center">Contact Us</h1>
-    <p class="lead text-center">
+    <h1 class="mb-4 text-left text-primary">Contact Us</h1>
+    <p class="lead text-left">
       If you have any questions or inquiries, feel free to reach out using the form below or through
       the provided contact information.
     </p>
@@ -120,13 +121,13 @@ const contactSubmission = async () => {
     </form>
 
     <div class="contact-info mb-4">
-      <h2 class="mb-3">Other Contact Information</h2>
+      <h2 class="text-primary mb-3">Other Contact Information</h2>
       <p><strong>Email:</strong> info@newhorizons.org</p>
       <p><strong>Phone:</strong> +123 456 7890</p>
       <p><strong>Postal Address:</strong> Shop 4/21 Chancellors Walk, Clayton VIC 3168</p>
     </div>
     <div class="map-container">
-      <h1 class="mb-4">Our Locations</h1>
+      <h1 class="text-primary mb-4">Our Locations</h1>
       <MapTest />
     </div>
   </div>

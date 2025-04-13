@@ -48,7 +48,7 @@ exports.contactFormSecure = onRequest((req, res) => {
         name: safeName,
         email,
         message: safeMessage,
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        createdAt: new Date().toISOString(), // ISO timestamp
       }
       // Attempt to submit form and send email reply
       try {
@@ -78,39 +78,54 @@ exports.contactFormSecure = onRequest((req, res) => {
 })
 
 // Function to handle donation form submissions
-exports.doantionFormSecure = onRequest((req, res) => {
+exports.donationFormSecure = onRequest((req, res) => {
   cors(req, res, () => {
     if (req.method !== 'POST') {
       return res.status(405).send('Method Not Allowed')
     }
+
     limiter(req, res, async () => {
-      const { name, email, message } = req.body
-      if (!name || !email || !message) {
-        return res.status(400).send('All fields (name, email, message) are required.')
+      // Validating required fields
+      const { uid, email, displayName, amount, message } = req.body
+
+      if (!uid || !email || !displayName || !amount) {
+        return res.status(400).send('Missing required fields: uid, email, displayName, and amount.')
       }
+
       if (!validator.isEmail(email)) {
         return res.status(400).send('Invalid email address.')
       }
-      const safeName = validator.escape(name)
-      const safeMessage = validator.escape(message)
+
+      // Sanitize inputs
+      const safeDisplayName = validator.escape(displayName)
+      const safeMessage = message ? validator.escape(message) : ''
+
       logger.info('Sanitized donation form submission', {
-        name: safeName,
+        uid,
         email,
+        displayName: safeDisplayName,
+        amount,
         message: safeMessage,
       })
+
+      // Final form data
       const submission = {
-        name: safeName,
+        uid,
         email,
+        displayName: safeDisplayName,
+        amount: Number(amount),
         message: safeMessage,
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        createdAt: new Date().toISOString(), // ISO timestamp
       }
+
+      // Attempt to submit form
       try {
         await admin.firestore().collection('donations').add(submission)
+        res.status(200).send('Donation submission received.')
       } catch (firestoreError) {
-        logger.error('Error saving submission to Firestore', firestoreError)
-        return res.status(500).send('Failed to save submission.')
+        logger.error('Error saving donation to Firestore', firestoreError)
+        return res.status(500).send('Failed to save donation.')
       }
-      res.status(200).send('Submission received.')
     })
   })
 })

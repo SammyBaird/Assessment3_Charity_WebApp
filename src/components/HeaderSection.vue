@@ -117,11 +117,6 @@ const handleSignOut = () => {
                     New Horizons Impact
                   </RouterLink>
                 </li>
-                <li>
-                  <RouterLink class="dropdown-item" to="/aboutus/partners">
-                    Team and Partners
-                  </RouterLink>
-                </li>
               </ul>
             </li>
             <li class="nav-item dropdown">
@@ -154,11 +149,6 @@ const handleSignOut = () => {
                 <li>
                   <RouterLink class="dropdown-item" to="/donation/money-spent">
                     Where Your Money Goes
-                  </RouterLink>
-                </li>
-                <li>
-                  <RouterLink class="dropdown-item" to="/donation/sponsorship">
-                    Sponsorship initiatives
                   </RouterLink>
                 </li>
               </ul>

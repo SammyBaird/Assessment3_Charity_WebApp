@@ -32,48 +32,42 @@ onMounted(async () => {
         {
           label: 'Administrative',
           data: administrative,
-          backgroundColor: 'rgba(255, 159, 64, 0.7)',
-          borderColor: 'rgba(255, 159, 64, 1)',
+          backgroundColor: 'orange',
           borderWidth: 1,
           stack: 'spending',
         },
         {
           label: 'Programs',
           data: programs,
-          backgroundColor: 'rgba(75, 192, 192, 0.7)',
-          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'teal',
           borderWidth: 1,
           stack: 'spending',
         },
         {
           label: 'Fundraising',
           data: fundraising,
-          backgroundColor: 'rgba(255, 205, 86, 0.7)',
-          borderColor: 'rgba(255, 205, 86, 1)',
+          backgroundColor: 'cyan',
           borderWidth: 1,
           stack: 'spending',
         },
         {
           label: 'Operations',
           data: operations,
-          backgroundColor: 'rgba(54, 162, 235, 0.7)',
-          borderColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: 'blue',
           borderWidth: 1,
           stack: 'spending',
         },
         {
           label: 'Outreach',
           data: outreach,
-          backgroundColor: 'rgba(153, 102, 255, 0.7)',
-          borderColor: 'rgba(153, 102, 255, 1)',
+          backgroundColor: 'violet',
           borderWidth: 1,
           stack: 'spending',
         },
         {
           label: 'Grants',
           data: grants,
-          backgroundColor: 'rgba(201, 203, 207, 0.7)',
-          borderColor: 'rgba(201, 203, 207, 1)',
+          backgroundColor: 'darkgrey',
           borderWidth: 1,
           stack: 'spending',
         },
@@ -125,25 +119,29 @@ onMounted(async () => {
 })
 
 function exportCSV() {
-  const url = 'https://us-central1-assess-3-charity.cloudfunctions.net/exportSpendingCSV'
-  window.open(url, '_blank')
+  const cloudFN = 'https://us-central1-assess-3-charity.cloudfunctions.net/exportSpendingCSV'
+  window.open(cloudFN, '_blank')
 }
 </script>
 
 <template>
   <div class="analytics">
-    <h1>Charity Spending Analytics</h1>
-    <canvas ref="chartCanvas" id="spendingChart"></canvas>
+    <h1 class="text-left text-primary mb-4">New Horizons Histroical Spending</h1>
+    <div class="card shadow-sm p-4">
+      <canvas ref="chartCanvas" id="spendingChart"></canvas>
+      <p class="mt-4">
+        This chart shows the monthly spending breakdown for our charity. The categories include
+        Administrative, Programs, Fundraising, Operations, Outreach, and Grants. Each category is
+        represented by a different color.
+      </p>
+    </div>
+    <br />
+    <h2 class="text-left text-primary mb-4">Transparency and Accountability</h2>
     <p>
-      This chart shows the monthly spending breakdown for our charity. The categories include
-      Administrative, Programs, Fundraising, Operations, Outreach, and Grants. Each category is
-      represented by a different color.
+      f We pride ourselves on transparency and accountability. If you wish to see a more detailed
+      account of our spending, you can export the data in CSV format here:
     </p>
-    <p>
-      We pride ourselves on transparency and accountability. If you wish to see more detailed
-      account of our spending, you can export the data in CSV format here
-    </p>
-    <button class="btn btn-primary ms-2" @click="exportCSV">Export as CSV</button>
+    <button class="btn btn-primary mt-3" @click="exportCSV">Export as CSV</button>
   </div>
 </template>
 

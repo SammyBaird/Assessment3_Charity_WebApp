@@ -13,7 +13,7 @@ export default {
 <template>
   <div class="impact-page container">
     <h1 class="text-primary my-4">Our Impact</h1>
-    <p class="lead">Welcome to the About Us page! Learn more about our mission and values here.</p>
+    <p class="lead"></p>
     <div class="my-4">
       <h2 class="h5">Where Our Refugees Come From</h2>
       <p>
@@ -22,21 +22,18 @@ export default {
         South Sudan, Myanmar, and Venezuela. Each story is unique, and we are committed to providing
         the resources and support needed to help them rebuild their lives.
       </p>
-      <RefugeeSupportMap />
+      <figure>
+        <RefugeeSupportMap />
+        <figcaption class="text-center mt-2">
+          <em
+            >Figure: Map showing the countries and regions from which our supported refugees
+            originate</em
+          >
+        </figcaption>
+      </figure>
     </div>
     <div class="my-4"></div>
   </div>
 </template>
 
-<style scoped>
-.impact-page {
-  text-align: center;
-  padding: 2rem;
-  color: #000000;
-  max-width: 1200px;
-}
-
-p {
-  color: #000000;
-}
-</style>
+<style scoped></style>
