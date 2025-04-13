@@ -41,7 +41,6 @@ const router = createRouter({
     // Lazy-load About Us page routes:
     { path: '/aboutus/impact', component: () => import('../views/aboutus/ImpactPage.vue') },
     { path: '/aboutus/mission', component: () => import('../views/aboutus/MissionPage.vue') },
-    { path: '/aboutus/partners', component: () => import('../views/aboutus/PartnersPage.vue') },
 
     // Lazy-load Donation page routes:
     {
@@ -51,10 +50,6 @@ const router = createRouter({
     {
       path: '/donation/money-spent',
       component: () => import('../views/donations/MoneySpentPage.vue'),
-    },
-    {
-      path: '/donation/sponsorship',
-      component: () => import('../views/donations/SponsorshipPage.vue'),
     },
 
     // Lazy-load Contact page routes:

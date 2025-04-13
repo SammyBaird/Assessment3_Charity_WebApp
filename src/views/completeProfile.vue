@@ -8,7 +8,7 @@ const router = useRouter()
 const auth = getAuth()
 const db = getFirestore()
 
-// Reactive variables for user profile data.
+// Variables for user profile data.
 const firstName = ref('')
 const lastName = ref('')
 const email = ref('')
@@ -19,7 +19,7 @@ const successMsg = ref('')
 const countries = ref([])
 const nationality = ref('')
 
-// On mount, load the current user's profile from Firestore
+// Load the current user's profile
 onMounted(async () => {
   const user = auth.currentUser
   if (user) {
@@ -32,7 +32,7 @@ onMounted(async () => {
       lastName.value = data.lastName || ''
       accountType.value = data.accountType || ''
       gender.value = data.gender || 'Prefer not to say'
-      // If the user has already saved a country, we later match it to an object.
+
       if (data.nationality) {
         nationality.value = { name: data.nationality, region: data.region || '' }
       } else {
@@ -45,7 +45,6 @@ onMounted(async () => {
     const response = await fetch('https://restcountries.com/v2/all')
     const data = await response.json()
     countries.value = data.sort((a, b) => a.name.localeCompare(b.name))
-    // If a nationality was saved as a string, try to find the full country object.
     if (
       nationality.value &&
       typeof nationality.value === 'object' &&
@@ -85,7 +84,6 @@ const updateProfileInfo = async () => {
       lastName: lastName.value,
       accountType: accountType.value,
       gender: gender.value,
-      // Save the country name and region as stored in registration.
       nationality: nationality.value.name,
       region: nationality.value.region,
     })
@@ -104,6 +102,7 @@ const updateProfileInfo = async () => {
 }
 </script>
 
+<!-- Bootstrap for Responsiveness -->
 <template>
   <div class="complete-profile container my-5">
     <h1 class="mb-4 text-center">Complete Your Profile</h1>

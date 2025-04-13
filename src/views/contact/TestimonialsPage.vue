@@ -100,8 +100,8 @@ export default {
 
 <template>
   <div class="container py-5 testimonials-page">
-    <div class="text-center mb-5">
-      <h1 class="mb-4">Our Community Speaks</h1>
+    <div class="text-left mb-5">
+      <h1 class="text-primary mb-4">Our Community Speaks</h1>
       <p class="lead">
         <!-- Text generate by GenAI -->
         We truly value the feedback from our community – both our donors and refugees. Your reviews
