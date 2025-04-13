@@ -20,10 +20,7 @@ const filterDonations = computed(() => {
   }
   const lowerFilter = filterText.value.toLowerCase()
   return donationData.value.filter(
-    (donation) =>
-      (donation.message && donation.message.toLowerCase().includes(lowerFilter)) ||
-      (donation.displayName && donation.displayName.toLowerCase().includes(lowerFilter)) ||
-      (donation.email && donation.email.toLowerCase().includes(lowerFilter)),
+    (donation) => donation.message && donation.message.toLowerCase().includes(lowerFilter),
   )
 })
 
@@ -50,7 +47,7 @@ onMounted(async () => {
     donationData.value = userDonations
     await nextTick()
   } else {
-    // This is impossible
+    // This is impossible to happen, but just in case
     console.error('No user is signed in.')
   }
 })
@@ -125,3 +122,5 @@ function nextPage() {
     </nav>
   </div>
 </template>
+
+<style scoped></style>

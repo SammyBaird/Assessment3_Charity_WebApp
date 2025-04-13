@@ -121,7 +121,7 @@ export default {
     <div class="rating-summary text-center mb-4">
       <p v-if="ratings.length > 0" class="h5">
         Average Rating: {{ averageRating.toFixed(1) }}
-        <small class="text-muted"
+        <small
           >(based on {{ ratings.length }} review<span v-if="ratings.length > 1">s</span>)</small
         >
       </p>
@@ -189,8 +189,4 @@ export default {
   </div>
 </template>
 
-<style scoped>
-.testimonials-page {
-  color: #000;
-}
-</style>
+<style scoped></style>

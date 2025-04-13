@@ -55,7 +55,6 @@ export default {
         </div>
       </div>
 
-      <!-- Our Impact Card -->
       <div class="col-md-6 mb-4">
         <div class="card h-100 shadow-sm">
           <div class="card-body">
@@ -84,7 +83,6 @@ export default {
       </div>
     </div>
 
-    <!-- Closing Message -->
     <div class="text-center mt-4">
       <p>
         <em>
