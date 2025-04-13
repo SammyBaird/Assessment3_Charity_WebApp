@@ -35,7 +35,7 @@ async function sendMessage() {
 }
 </script>
 
-<!-- Tooggle Chat box window -->
+<!-- Tooggle Chat box window. This was a bit annoying... -->
 <template>
   <div class="chatbox-container">
     <button @click="toggleChat" class="btn btn-primary">

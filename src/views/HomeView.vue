@@ -76,7 +76,6 @@ We provide assistance in a number of ways. Check out our services to see how we 
       <p class="lead">Join us in our mission to provide assistance and hope to those in need.</p>
     </div>
 
-    <!-- Cards -->
     <div class="con-cards">
       <div class="row">
         <div v-for="post in posts" :key="post.id" class="col-md-4 mb-4">

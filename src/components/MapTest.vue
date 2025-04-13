@@ -16,7 +16,7 @@ const props = defineProps({
     type: Number,
     default: 10,
   },
-  // Set default map center
+  // Set default map center (melborune)
   initialCenter: {
     type: Object,
     default: () => ({ lat: -37.8136, lng: 144.9631 }),

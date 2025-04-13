@@ -14,7 +14,7 @@ const password = ref('')
 const router = useRouter()
 const errMsg = ref()
 
-//
+// Function to handle sign-in with email and password
 const signIn = () => {
   signInWithEmailAndPassword(getAuth(), email.value, password.value)
     .then(async (userCredential) => {
@@ -51,6 +51,7 @@ const signIn = () => {
     })
 }
 
+// Function to handle sign-in with Google
 const singInWithGoogle = () => {
   const provider = new GoogleAuthProvider()
   const auth = getAuth()
