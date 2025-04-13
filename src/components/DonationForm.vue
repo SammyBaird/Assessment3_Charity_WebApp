@@ -83,10 +83,4 @@ const donationSubmission = async () => {
   </section>
 </template>
 
-<style scoped>
-.donation-form {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 1rem;
-}
-</style>
+<style scoped></style>

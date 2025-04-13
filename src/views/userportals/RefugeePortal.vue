@@ -4,9 +4,8 @@ export default {
   data() {
     return {
       posts: [
-        { id: 1, title: 'Post One', content: 'This is the first post on our feed.' },
-        { id: 2, title: 'Post Two', content: 'Here is some more information in the second post.' },
-        { id: 3, title: 'Post Three', content: 'More updates on our mission in this third post.' },
+        { id: 1, title: 'Eligibilty Checker', content: 'This feature is current on its way.' },
+        { id: 2, title: 'Donations and Funding Recieved', content: 'Enter some text here.' },
       ],
     }
   },
@@ -30,30 +29,4 @@ export default {
   </div>
 </template>
 
-<style scoped>
-.feed-page {
-  padding: 2rem;
-  background: #faf0e6;
-}
-
-.feed-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.feed-post {
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background: #ffffff;
-}
-
-.feed-post h2 {
-  margin: 0 0 0.5rem;
-}
-
-.feed-post p {
-  margin: 0;
-}
-</style>
+<style scoped></style>

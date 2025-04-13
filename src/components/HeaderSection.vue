@@ -3,17 +3,20 @@ import { ref, onMounted, computed } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 import { getFirestore, doc, getDoc } from 'firebase/firestore'
+import { defineProps } from 'vue'
+
+const props = defineProps({
+  isDarkMode: Boolean,
+})
 
 const router = useRouter()
 const auth = getAuth()
 const db = getFirestore()
 
-// Reactive state for auth
 const isLoggedIn = ref(false)
 const accountType = ref(null)
 const firstName = ref('')
 
-// Listen for auth changes
 onMounted(() => {
   onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -39,14 +42,12 @@ onMounted(() => {
   })
 })
 
-// Compute the portal route
 const portalRoute = computed(() => {
   if (!isLoggedIn.value) return null
   if (!accountType.value || accountType.value === '') return '/completeProfile'
   return accountType.value === 'donor' ? '/user-portal/donor' : '/user-portal/refugee'
 })
 
-// Sign-out function.
 const handleSignOut = () => {
   signOut(auth)
     .then(() => {
@@ -57,14 +58,19 @@ const handleSignOut = () => {
       console.error('Error signing out:', error)
     })
 }
+
+// Trying to add in a darkmode...
+// Some of the components are not dark mode compatible yet
+const headerClass = computed(() => {
+  return [props.isDarkMode ? 'bg-dark navbar-dark' : 'bg-light navbar-light', 'fixed-top', 'shadow']
+})
 </script>
 
-<!-- Bootstrap for Responsivness -->
 <template>
-  <header class="bg-light fixed-top shadow">
+  <header :class="headerClass">
     <div class="container">
       <div class="d-flex align-items-center flex-nowrap py-2">
-        <div class="text-center">
+        <div class="text-center me-4">
           <RouterLink to="/">
             <img
               class="img-fluid"
@@ -167,6 +173,11 @@ const handleSignOut = () => {
             </li>
           </ul>
         </nav>
+        <div class="ms-3">
+          <button class="btn btn-outline-secondary" @click="$emit('toggle-dark')">
+            {{ isDarkMode ? 'Light Mode' : 'Dark Mode (Beta)' }}
+          </button>
+        </div>
       </div>
     </div>
   </header>

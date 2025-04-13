@@ -58,21 +58,27 @@ const singInWithGoogle = () => {
   signInWithPopup(auth, provider)
     .then(async (result) => {
       const user = result.user
-      const docRef = doc(db, 'users', user.uid)
-      const docSnap = await getDoc(docRef)
-      if (docSnap.exists()) {
-        const data = docSnap.data()
-        if (data.accountType === 'donor') {
-          router.push('/user-portal/donor')
-        } else if (data.accountType === 'refugee') {
-          router.push('/user-portal/refugee')
-        } else {
-          console.warn('Account type not recognized. Redirecting to home.')
-          router.push('/')
-        }
+      const additionalUserInfo = result.additionalUserInfo
+      if (additionalUserInfo?.isNewUser) {
+        console.log('New user detected. Redirecting to register page.')
+        router.push('/register')
       } else {
-        console.error('No user document found for:', user.uid)
-        router.push('/feed')
+        const docRef = doc(db, 'users', user.uid)
+        const docSnap = await getDoc(docRef)
+        if (docSnap.exists()) {
+          const data = docSnap.data()
+          if (data.accountType === 'donor') {
+            router.push('/user-portal/donor')
+          } else if (data.accountType === 'refugee') {
+            router.push('/user-portal/refugee')
+          } else {
+            console.warn('Account type not recognized. Redirecting to home.')
+            router.push('/')
+          }
+        } else {
+          console.error('No user document found for:', user.uid)
+          router.push('/register')
+        }
       }
     })
     .catch((error) => {
